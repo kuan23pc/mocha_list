@@ -44,8 +44,8 @@ Python
 Python
 
 ## Work flow 
-Each fetures will be developed in a separate branch 
-Pull requests will be used before merging into main
-Code reviews will be done by team members
-No direct commits to the main branch 
+-Each fetures will be developed in a separate branch 
+-Pull requests will be used before merging into main
+-Code reviews will be done by team members
+-No direct commits to the main branch 
 
