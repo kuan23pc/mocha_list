@@ -46,7 +46,11 @@ Python is used because it provides the necessary functionality for handling user
 The program will be structured using object-oriented programming principles. 
 
 ## Build System 
-Python
+No external build system is required.
+
+The application is executed using the Pyhton interpreter and does not depend on any external libraries.
+
+To run the program: pyhton main.py
 
 ## Work flow 
 - Each feature will be developed in a separate branch
