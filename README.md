@@ -41,16 +41,24 @@ The application will run as a command line interface. Users can interact with th
 ## Programming Language
 The project will be implemented in Python 3. 
 
-Python is used because it provides the necessary functionality for handling user input, data structures, and file operations in a console based application. 
+Python is used because it provides the necessary functionality for handling user input, data structures, and file operations in a console-based application. 
 
 The program will be structured using object-oriented programming principles. 
 
 ## Build System 
 No external build system is required.
 
-The application is executed using the Pyhton interpreter and does not depend on any external libraries.
+The application is executed using the Python interpreter and does not depend on any external libraries.
 
-To run the program: pyhton main.py
+## How to Run the Project
+The program is a console-based application written in Python. 
+
+To run the program, follow these steps: 
+  1. Open a terminal
+  2. Navigate to the project folder by writing: 
+     cd group_project
+  3. Run the program by writing: 
+     py main.py
 
 ## Work flow 
 - Each feature will be developed in a separate branch
