@@ -9,7 +9,7 @@ def add_task():
 
 # Fun. to display all tasks
 def show_tasks():
-    print("Tasks:")
+    print("All tasks:")
     for t in tasks:
         print(t)
 
