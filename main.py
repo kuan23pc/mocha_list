@@ -10,8 +10,8 @@ def add_task():
 # Fun. to display all tasks
 def show_tasks():
     print("Tasks:")
-    for i, t in enumerate(tasks,1):
-        print(f"{i}. {t}")
+    for t in tasks:
+        print(t)
 
 # Main program loop
 while True:
