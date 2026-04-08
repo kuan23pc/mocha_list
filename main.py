@@ -35,3 +35,7 @@ def sort_tasks(tasks):
 #isabellas 6
 def set_deadline(task,deadline):
     return task + "(deadline: " + deadline + ")"
+
+#isabellas
+def set_priority(task,priority):
+    return task + "(priority: " + priority + ")"
