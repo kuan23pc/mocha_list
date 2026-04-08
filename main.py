@@ -39,3 +39,11 @@ while True:
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
+# isabellas 
+def sort_tasks(tasks):
+    if not tasks:
+        return[]
+    return sorted(tasks)
+#isabellas 6
+def set_deadline(task,deadline):
+    return task + "(deadline: " + deadline + ")"
