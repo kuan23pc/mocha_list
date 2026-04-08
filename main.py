@@ -3,15 +3,25 @@ tasks = []
 
 # Function to add a new task
 def add_task():
-    task = input("Enter task: ") 
+    task = input("Enter task: ").strip()
+
+    if task == "":
+        print("Task cannot be empty.")
+        return
+     
     tasks.append(task)
-    print("Task added!")
+    print(f"Task '{task}' added!")
 
 # Fun. to display all tasks
 def show_tasks():
-    print("All tasks:")
+    if not tasks:
+        print("No tasks available.")
+        return
+    
+    print("\nTasks:")
+
     for t in tasks:
-        print(t)
+        print(f"- {t}")
 
 # Main program loop
 while True:
@@ -19,7 +29,7 @@ while True:
     print("2. Show tasks")
     print("3. Exit")
 
-    choice = input("Choose: ") #User selects option
+    choice = input("Choose an option: ") #User selects option
 
     if choice == "1":
         add_task()
@@ -27,3 +37,5 @@ while True:
         show_tasks()
     elif choice == "3":
         break  #Exit program
+    else:
+        print("Invalid choice. Please try again.")
