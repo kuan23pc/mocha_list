@@ -1,15 +1,15 @@
-import json
-import os
+import json  #gives us tools for working with JSON files. JSON is just a way to store data, like a notebook.
+import os #This gives us tools for interacting with the computer/files. Used for checking "does this file exist"
 
-FILE_NAME = "tasks.json"
+FILE_NAME = "tasks.json" #name of the file where tasks will be stored
 
-
+#Loads tasks from the JSON file if they exist
 def load_tasks():
-    if os.path.exists(FILE_NAME):
-        with open(FILE_NAME, "r") as file:
-            return json.load(file)
+    if os.path.exists(FILE_NAME): #check if tasks.json exists 
+        with open(FILE_NAME, "r") as file: #open the file in read mode 
+            return json.load(file) #read JSON data and return it as a python list 
 
-    return []
+    return [] #If file doesnt exist, return a empty list
 
 
 def save_tasks(tasks):
