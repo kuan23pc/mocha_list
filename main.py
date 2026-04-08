@@ -27,3 +27,8 @@ while True:
         show_tasks()
     elif choice == "3":
         break  #Exit program
+# isabellas 
+def sort_tasks(tasks):
+    if not tasks:
+        return[]
+    return sorted(tasks)
