@@ -33,7 +33,7 @@ def show_tasks():
 #Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
-        print("No tasksk available to delete.")
+        print("No tasks available to delete.")
         return 
     
     task_to_delete = input ("Enter the task to delete: ").strip()
@@ -45,7 +45,7 @@ def delete_tasks():
     if task_to_delete in tasks:
         index = tasks .index(task_to_delete)          #fins where task is 
         remove_task = tasks.pop(index)                #remove task 
-        complete.pop(index)                           #remove matching status
+        completed.pop(index)                           #remove matching status
         print(f"Task '{remove_task}'deleted!")
     else:
         print("Task not found.")
@@ -84,7 +84,7 @@ while True:
     elif choice == "2":
         show_tasks()
     elif choice == "3":
-        delete_task()
+        delete_tasks()
     elif choice == "4":
         mark_task_completed()
     elif choice == "5":
