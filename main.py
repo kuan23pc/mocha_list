@@ -100,8 +100,7 @@ while True:
     print("2. Show tasks")
     print("3. Delete tasks")
     print("4. Mark task as completed")
-    print("5. Sort tasks")
-    print("6. Exit")
+    print("5. Exit")
 
     choice = input("Choose an option: ") #User selects option
 
@@ -114,10 +113,6 @@ while True:
     elif choice == "4":
         mark_task_completed()
     elif choice == "5":
-        tasks[:] = sort_tasks(tasks)
-        save_tasks()
-        print("Tasks sorted!")
-    elif choice == "6":
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
