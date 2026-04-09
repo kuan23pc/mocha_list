@@ -7,17 +7,14 @@ def load_tasks():
     if os.path.exists(FILE_NAME):
         with open(FILE_NAME, "r") as file:
             return json.load(file)
-        return []
+    return []
 
 tasks = load_tasks()
+completed = [False] * len(tasks)
 
-with open(FILE_NAME, "w") as file:
-    json.dump(tasks, file, indent=4)
-# List to store all tasks
-tasks = []
-#List to store if a task is completed or not 
-#False = not done, True = done 
-completed = []
+def save_tasks():
+    with open(FILE_NAME, "w") as file:
+        json.dump(tasks, file, indent=4)
 
 # Function to add a new task
 def add_task():
@@ -28,16 +25,10 @@ def add_task():
         return
      
     tasks.append(task)
+    completed.append(False)
     save_tasks()
-    print("Task added!")
-
-def save_tasks():
-    with open(FILE_NAME, "w") as file:
-        json.dump(tasks, file, indet=4)
-
-# Fun. to display all tasks
-    completed.append(False) #new task is not completed yet
     print(f"Task '{task}' added!")
+
 
 #Fun. to display all tasks
 def show_tasks():
@@ -49,9 +40,9 @@ def show_tasks():
 
     for i in range (len(tasks)):
         if completed[i]:
-            print(f"-{tasks[i]} [Completed]")
+            print(f"- {tasks[i]} [Completed]")
         else:
-            print(f"-{tasks[i]} [Not Completed]")
+            print(f"- {tasks[i]} [Not Completed]")
 
 #Funktion to DELETE a task CO
 def delete_tasks():
@@ -66,10 +57,11 @@ def delete_tasks():
         return
     
     if task_to_delete in tasks:
-        index = tasks .index(task_to_delete)          #fins where task is 
+        index = tasks.index(task_to_delete)          #fins where task is 
         remove_task = tasks.pop(index)                #remove task 
-        completed.pop(index)                           #remove matching status
-        print(f"Task '{remove_task}'deleted!")
+        completed.pop(index)
+        save_tasks()                           #remove matching status
+        print(f"Task '{remove_task}' deleted!")
     else:
         print("Task not found.")
 
@@ -87,10 +79,11 @@ def mark_task_completed():
 
     if task_to_complete in tasks:
         index= tasks.index(task_to_complete)  #Find task Position
-        completed[index] = True               #mark as completed
+        completed[index] = True
+        save_tasks()               #mark as completed
         print(f"Task '{tasks[index]}' marked as completed!")
     else:
-        print("task not found.")
+        print("Task not found.")
 
 # Main program loop
 while True:
