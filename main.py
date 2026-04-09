@@ -1,3 +1,18 @@
+import json
+import os
+
+FILE_NAME = "tasks.json"
+
+def load_tasks():
+    if os.path.exists(FILE_NAME):
+        with open(FILE_NAME, "r") as file:
+            return json.load(file)
+        return []
+
+tasks = load_tasks()
+
+with open(FILE_NAME, "w") as file:
+    json.dump(tasks, file, indent=4)
 # List to store all tasks
 tasks = []
 #List to store if a task is completed or not 
@@ -13,6 +28,14 @@ def add_task():
         return
      
     tasks.append(task)
+    save_tasks()
+    print("Task added!")
+
+def save_tasks():
+    with open(FILE_NAME, "w") as file:
+        json.dump(tasks, file, indet=4)
+
+# Fun. to display all tasks
     completed.append(False) #new task is not completed yet
     print(f"Task '{task}' added!")
 
