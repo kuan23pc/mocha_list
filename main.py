@@ -34,14 +34,14 @@ def show_tasks():
         return
     
     total = len(tasks)
-    done = sum(completed)
+    done = sum(task["completed"] for task in tasks)
     
     print(f"\n📝 Task List: ({total} tasks)")
     print(f"✅ Completed tasks: {done}/{total}\n")
 
     for i, task in enumerate(tasks, start=1):
-        status = "✅ Completed" if completed[i-1] else "❌ Not Completed"
-        print(f"{i}. {task}: {status}")
+        status = "✅ Completed" if task["completed"] else "❌ Not Completed"
+        print(f"{i}. {task['title']}: {status}")
 
 #Funktion to DELETE a task CO
 def delete_tasks():
@@ -68,8 +68,8 @@ def delete_tasks():
         return 
     
     removed_task= tasks.pop(index)
-    completed.pop(index)
-    print(f"Task '{removed_task}' deleted!")
+    save_tasks()
+    print(f"Task '{removed_task['title']}' deleted!")
 
 #FUnction to MARK a task as COMPLETED CO
 def mark_task_completed():
@@ -124,3 +124,5 @@ while True:
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
+
+#ny kod
