@@ -4,7 +4,7 @@ tasks = []
 #False = not done, True = done 
 completed = []
 
-# Function to add a new task
+#Function to add a new task
 def add_task():
     task = input("Enter task: ").strip()
 
@@ -26,29 +26,37 @@ def show_tasks():
 
     for i in range (len(tasks)):
         if completed[i]:
-            print(f"-{tasks[i]} [Completed]")
+            print(f"{i+1}. {tasks[i]} [Completed]")
         else:
-            print(f"-{tasks[i]} [Not Completed]")
+            print(f"{i+1}. {tasks[i]} [Not Completed]")
 
 #Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
-        print("No tasks available to delete.")
+        print("No tasks available to delete.") #kontrollera om listan är tom
         return 
-    
-    task_to_delete = input ("Enter the task to delete: ").strip()
+
+    show_tasks() #visa alla tasks först 
+
+    task_to_delete = input ("Enter the task number to delete: ").strip() #frågan efter task nummer
 
     if task_to_delete == "":
-        print("Task name cannot be empty.")
+        print("Task number cannot be empty.")
         return
+
+    if not task_to_delete.isdigit():  #kontrollera att det är en siffra 
+        print("Please enter a valid number.")
+        return 
     
-    if task_to_delete in tasks:
-        index = tasks .index(task_to_delete)          #fins where task is 
-        remove_task = tasks.pop(index)                #remove task 
-        completed.pop(index)                           #remove matching status
-        print(f"Task '{remove_task}'deleted!")
-    else:
-        print("Task not found.")
+    index = int(task_to_delete) - 1 #omvandla till pyhton index (python börjar på 0, användare börjar på 1)
+
+    if index < 0 or index >= len(tasks):
+        print("Task number not found.")
+        return 
+    
+    removed_task= tasks.pop(index)
+    completed.pop(index)
+    print(f"Task '{removed_task}' deleted!")
 
 #FUnction to MARK a task as COMPLETED CO
 def mark_task_completed():
