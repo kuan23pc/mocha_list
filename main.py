@@ -2,7 +2,7 @@ import json
 import os
 
 FILE_NAME = "tasks.json"
-
+#load task from file if it exists,otherwise return empty list
 def load_tasks():
     if os.path.exists(FILE_NAME):
         with open(FILE_NAME, "r") as file:
@@ -10,8 +10,8 @@ def load_tasks():
     return []
 
 tasks = load_tasks()
-completed = [False] * len(tasks)
 
+#save tasks to json file
 def save_tasks():
     with open(FILE_NAME, "w") as file:
         json.dump(tasks, file, indent=4)
@@ -23,14 +23,11 @@ def add_task():
     if task == "":
         print("Task cannot be empty.")
         return
-     
-    tasks.append(task)
-    completed.append(False)
+    tasks.append({"title": task, "completed": False})
     save_tasks()
     print(f"Task '{task}' added!")
 
-
-#Fun. to display all tasks
+#display all tasks with their completion status
 def show_tasks():
     if not tasks:
         print("No tasks available.")
@@ -38,13 +35,10 @@ def show_tasks():
     
     print("\nTasks:")
 
-    for i in range (len(tasks)):
-        if completed[i]:
-            print(f"- {tasks[i]} [Completed]")
-        else:
-            print(f"- {tasks[i]} [Not Completed]")
-
-#Funktion to DELETE a task CO
+    for task in tasks:
+        status = "Completed" if task ["completed"] else "Not Completed"
+        print(f"- {task['title']} [{status}]")
+#delete a task by its title
 def delete_tasks():
     if not tasks:
         print("No tasks available to delete.")
@@ -56,38 +50,40 @@ def delete_tasks():
         print("Task name cannot be empty.")
         return
     
-    if task_to_delete in tasks:
-        index = tasks.index(task_to_delete)          #fins where task is 
-        remove_task = tasks.pop(index)                #remove task 
-        completed.pop(index)
-        save_tasks()                           #remove matching status
-        print(f"Task '{remove_task}' deleted!")
-    else:
-        print("Task not found.")
-
-#FUnction to MARK a task as COMPLETED CO
+    for i, task in enumerate(tasks):
+        if task ["title"] == task_to_delete:
+            removed_task = tasks.pop(i)
+            save_tasks()
+            print(f"Task '{removed_task['title']} deleted!")
+            return
+        
+    
+    print("Task not found.")
+#mark a task as completed
 def mark_task_completed():
     if not tasks:
         print("No tasks available.")
         return 
     
     task_to_complete = input ("Enter the task to mark as completed: ").strip()
-   
+
     if task_to_complete == "":
         print("Task name cannot be empty.")
         return
+    for task in tasks:
+        if task["title"] == task_to_complete:
+            task["completed"] = True
+            save_tasks()
+            print(f"Task '{task['title']}' marked as completed!")
+            return
+    
 
-    if task_to_complete in tasks:
-        index= tasks.index(task_to_complete)  #Find task Position
-        completed[index] = True
-        save_tasks()               #mark as completed
-        print(f"Task '{tasks[index]}' marked as completed!")
-    else:
-        print("Task not found.")
-# function 
+    print("Task not found.")
+   
+    # optional: add deadline to a task(not integrated)
 def sort_tasks(tasks):
     if not tasks:
-        return[]
+        return []
     return sorted(tasks)
 # function for deadline
 def set_deadline(task,deadline):
