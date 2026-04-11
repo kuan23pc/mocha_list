@@ -30,16 +30,18 @@ def add_task():
 #display all tasks with their completion status
 def show_tasks():
     if not tasks:
-        print("No tasks available.")
+        print("👎 No tasks available. Add a new task!")
         return
     
-    print("\nTasks:")
+    total = len(tasks)
+    done = sum(completed)
+    
+    print(f"\n📝 Task List: ({total} tasks)")
+    print(f"✅ Completed tasks: {done}/{total}\n")
 
-    for i in range (len(tasks)):
-        if completed[i]:
-            print(f"{i+1}. {tasks[i]} [Completed]")
-        else:
-            print(f"{i+1}. {tasks[i]} [Not Completed]")
+    for i, task in enumerate(tasks, start=1):
+        status = "✅ Completed" if completed[i-1] else "❌ Not Completed"
+        print(f"{i}. {task}: {status}")
 
 #Funktion to DELETE a task CO
 def delete_tasks():
