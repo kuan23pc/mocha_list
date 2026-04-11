@@ -1,8 +1,20 @@
-# List to store all tasks
-tasks = []
-#List to store if a task is completed or not 
-#False = not done, True = done 
-completed = []
+import json
+import os
+
+FILE_NAME = "tasks.json"
+#load task from file if it exists,otherwise return empty list
+def load_tasks():
+    if os.path.exists(FILE_NAME):
+        with open(FILE_NAME, "r") as file:
+            return json.load(file)
+    return []
+
+tasks = load_tasks()
+
+#save tasks to json file
+def save_tasks():
+    with open(FILE_NAME, "w") as file:
+        json.dump(tasks, file, indent=4)
 
 #Function to add a new task
 def add_task():
@@ -11,12 +23,11 @@ def add_task():
     if task == "":
         print("Task cannot be empty.")
         return
-     
-    tasks.append(task)
-    completed.append(False) #new task is not completed yet
+    tasks.append({"title": task, "completed": False})
+    save_tasks()
     print(f"Task '{task}' added!")
 
-#Fun. to display all tasks
+#display all tasks with their completion status
 def show_tasks():
     if not tasks:
         print("No tasks available.")
@@ -65,17 +76,29 @@ def mark_task_completed():
         return 
     
     task_to_complete = input ("Enter the task to mark as completed: ").strip()
-   
+
     if task_to_complete == "":
         print("Task name cannot be empty.")
         return
+    for task in tasks:
+        if task["title"] == task_to_complete:
+            task["completed"] = True
+            save_tasks()
+            print(f"Task '{task['title']}' marked as completed!")
+            return
+    
 
-    if task_to_complete in tasks:
-        index= tasks.index(task_to_complete)  #Find task Position
-        completed[index] = True               #mark as completed
-        print(f"Task '{tasks[index]}' marked as completed!")
-    else:
-        print("task not found.")
+    print("Task not found.")
+   
+    # optional: add deadline to a task(not integrated)
+def sort_tasks(tasks):
+    if not tasks:
+        return []
+    return sorted(tasks)
+# function for deadline
+def set_deadline(task,deadline):
+    return task + "(deadline: " + deadline + ")"
+
 
 # Main program loop
 while True:
@@ -99,17 +122,3 @@ while True:
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
-
-
-# isabellas 
-def sort_tasks(tasks):
-    if not tasks:
-        return[]
-    return sorted(tasks)
-#isabellas 6
-def set_deadline(task,deadline):
-    return task + "(deadline: " + deadline + ")"
-
-#isabellas
-def set_priority(task,priority):
-    return task + "(priority: " + priority + ")"

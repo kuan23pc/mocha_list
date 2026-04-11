@@ -51,14 +51,19 @@ No external build system is required.
 The application is executed using the Python interpreter and does not depend on any external libraries.
 
 ## How to Run the Project
-The program is a console-based application written in Python. 
+The program is a console-based task manager written in Python. 
 
 To run the program, follow these steps: 
   1. Open a terminal
-  2. Navigate to the project folder by writing: 
+  2. Clone the repository:
+    
+     git clone https://github.com/kuan23pc/group_project.git
+  3. Navigate to the project folder by writing: 
+     
      cd group_project
-  3. Run the program by writing: 
-     py main.py
+  4. Run the program by writing: 
+     
+     python main.py
 
 ## Kanban Board 
 You can find our Kanban Board here: https://github.com/users/kuan23pc/projects/1
