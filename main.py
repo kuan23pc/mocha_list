@@ -16,7 +16,7 @@ def save_tasks():
     with open(FILE_NAME, "w") as file:
         json.dump(tasks, file, indent=4)
 
-# Function to add a new task
+#Function to add a new task
 def add_task():
     task = input("Enter task: ").strip()
 
@@ -35,31 +35,41 @@ def show_tasks():
     
     print("\nTasks:")
 
-    for task in tasks:
-        status = "Completed" if task ["completed"] else "Not Completed"
-        print(f"- {task['title']} [{status}]")
-#delete a task by its title
+    for i in range (len(tasks)):
+        if completed[i]:
+            print(f"{i+1}. {tasks[i]} [Completed]")
+        else:
+            print(f"{i+1}. {tasks[i]} [Not Completed]")
+
+#Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
-        print("No tasks available to delete.")
+        print("No tasks available to delete.") #kontrollera om listan är tom
         return 
-    
-    task_to_delete = input ("Enter the task to delete: ").strip()
+
+    show_tasks() #visa alla tasks först 
+
+    task_to_delete = input ("Enter the task number to delete: ").strip() #frågan efter task nummer
 
     if task_to_delete == "":
-        print("Task name cannot be empty.")
+        print("Task number cannot be empty.")
         return
+
+    if not task_to_delete.isdigit():  #kontrollera att det är en siffra 
+        print("Please enter a valid number.")
+        return 
     
-    for i, task in enumerate(tasks):
-        if task ["title"] == task_to_delete:
-            removed_task = tasks.pop(i)
-            save_tasks()
-            print(f"Task '{removed_task['title']} deleted!")
-            return
-        
+    index = int(task_to_delete) - 1 #omvandla till pyhton index (python börjar på 0, användare börjar på 1)
+
+    if index < 0 or index >= len(tasks):
+        print("Task number not found.")
+        return 
     
-    print("Task not found.")
-#mark a task as completed
+    removed_task= tasks.pop(index)
+    completed.pop(index)
+    print(f"Task '{removed_task}' deleted!")
+
+#FUnction to MARK a task as COMPLETED CO
 def mark_task_completed():
     if not tasks:
         print("No tasks available.")
