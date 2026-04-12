@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 FILE_NAME = "tasks.json"
 #load task from file if it exists,otherwise return empty list
@@ -138,6 +139,18 @@ def set_deadline():
         print("Deadline cannot be empty.")
         return
     
+    try:
+        parsed_deadline = datetime.strptime(deadline, "%Y-%m-%d").date()
+    except ValueError:
+        print("Please enter a valid date in YYYY-MM-DD format. ")
+        return
+    
+    today = datetime.today().date()
+    
+    if parsed_deadline < today:
+        print("Deadline cannot be in the past.")
+        return
+
     tasks[index]["deadline"] = deadline
     save_tasks()
 
