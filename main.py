@@ -77,6 +77,7 @@ def delete_tasks():
         return 
     
     removed_task= tasks.pop(index)
+    save_tasks()
     print(f"Task '{removed_task['title']}' deleted!")
 
 #FUnction to MARK a task as COMPLETED CO
