@@ -12,18 +12,24 @@
 - Implemented loading tasks from file (#10)
 - Implemented saving completed status in JSON (#26)
 
-### what went well
-- Good teamwork and clear task distribution
+### What went well
+- Good collaboration within the team.
+- Tasks were clearly divided using issues. 
 - Core functionality of the application was successfully implemented
 
-## challanges 
-- Learning how to use GIt and GitHub workflows
+## Challanges 
+- Some issues with GIT (merge conflicts, branches)
 - Understanding how to work with JSON for saving and loading data
 - Handling edge cases in task management
 - Coordinating work between multiple developers
 
-## improvments
-- Better planning before starting implementation
-- More frequent communication within the team
+## What we learned
+- How to work with Git in a team (PR, merge).
+- Importance of clear communication during development.
+- How to structure code for better readability and functionality. 
+
+## Improvments
+- Plan tasks more clearly from the start
+- More frequent communication within the team when problem occur. 
 - Improved testing before marking tasks as done
 
