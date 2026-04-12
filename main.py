@@ -84,21 +84,29 @@ def mark_task_completed():
         print("No tasks available.")
         return 
     
-    task_to_complete = input ("Enter the task to mark as completed: ").strip()
+    show_tasks() #visa alla tasks först
+
+    task_to_complete = input ("Enter the task number to mark as completed: ").strip()
 
     if task_to_complete == "":
-        print("Task name cannot be empty.")
+        print("Task number cannot be empty.")
         return
-    for task in tasks:
-        if task["title"] == task_to_complete:
-            task["completed"] = True
-            save_tasks()
-            print(f"Task '{task['title']}' marked as completed!")
-            return
     
+    if not task_to_complete.isdigit():
+        print("Please enter a valid number.")
+        return
+    
+    index = int(task_to_complete) - 1
 
-    print("Task not found.")
-   
+    if index < 0 or index >= len(tasks):
+        print("Task number not found.")
+        return
+    
+    tasks[index]["completed"] = True
+    save_tasks()
+    print(f"Task '{tasks[index]['title']}' marked as completed!")
+
+
     # optional: add deadline to a task(not integrated)
 def sort_tasks(tasks):
     if not tasks:
@@ -160,3 +168,5 @@ while True:
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
+
+#ny kod
