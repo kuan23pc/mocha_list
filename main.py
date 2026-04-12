@@ -23,7 +23,11 @@ def add_task():
     if task == "":
         print("Task cannot be empty.")
         return
-    tasks.append({"title": task, "completed": False})
+    tasks.append({
+        "title": task, 
+        "completed": False,
+        "deadline" : None
+        })
     save_tasks()
     print(f"Task '{task}' added!")
 
@@ -41,7 +45,11 @@ def show_tasks():
 
     for i, task in enumerate(tasks, start=1):
         status = "✅ Completed" if task["completed"] else "❌ Not Completed"
-        print(f"{i}. {task['title']}: {status}")
+
+        deadline = task.get("deadline")
+        deadline_text = f" (Deadline: {deadline})" if deadline else ""
+
+        print(f"{i}. {task['title']}{deadline_text}: {status}")
 
 #Funktion to DELETE a task CO
 def delete_tasks():
@@ -68,7 +76,6 @@ def delete_tasks():
         return 
     
     removed_task= tasks.pop(index)
-    save_tasks()
     print(f"Task '{removed_task['title']}' deleted!")
 
 #FUnction to MARK a task as COMPLETED CO
@@ -105,10 +112,36 @@ def sort_tasks(tasks):
     if not tasks:
         return []
     return sorted(tasks)
-# function for deadline
-def set_deadline(task,deadline):
-    return task + "(deadline: " + deadline + ")"
 
+# function for deadline
+def set_deadline():
+    if not tasks:
+        print("No tasks available.")
+        return
+    
+    show_tasks()
+    choice = input("Enter task number to set deadline: ").strip()
+
+    if not choice.isdigit():
+        print("Please enter a valid number.")
+        return
+    
+    index = int(choice) - 1
+
+    if index < 0 or index >= len(tasks):
+        print("Task not found.")
+        return
+    
+    deadline = input("Enter deadline (YYYY-MM-DD): ").strip()
+
+    if deadline == "":
+        print("Deadline cannot be empty.")
+        return
+    
+    tasks[index]["deadline"] = deadline
+    save_tasks()
+
+    print(f"⏰ Deadline added to '{tasks[index]['title']}'!")
 
 # Main program loop
 while True:
@@ -116,7 +149,8 @@ while True:
     print("2. Show tasks")
     print("3. Delete tasks")
     print("4. Mark task as completed")
-    print("5. Exit")
+    print("5. Set deadline")
+    print("6. Exit")
 
     choice = input("Choose an option: ") #User selects option
 
@@ -129,6 +163,8 @@ while True:
     elif choice == "4":
         mark_task_completed()
     elif choice == "5":
+        set_deadline()
+    elif choice == "6":
         break  #Exit program
     else:
         print("Invalid choice. Please try again.")
