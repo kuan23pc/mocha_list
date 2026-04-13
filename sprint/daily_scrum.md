@@ -52,7 +52,7 @@ Blockers
 ## Day 4 
 - Marina:
 - Chrisina:
-- Andjela:
+- Andjela: Completed implementation of input validation for user input. Added error handling for invalid menu choices and empty task inputs. Implemented safe input handling to prevent crashes. Tested validation logic across different edge cases.
 - Isablle:
 
 Next steps:
