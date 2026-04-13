@@ -1,4 +1,4 @@
-## Sprint Review
+## Retrospective
 
 ### Completed Work
 - Improve display format (#28)
