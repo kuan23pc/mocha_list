@@ -1,16 +1,13 @@
 ## Sprint Review
 
 ### Completed Work
-- Implemented adding new tasks (#2)
-- Implemented displaying all tasks (#8)
-- Implemented deleting tasks (#3)
-- Implemented marking tasks as completed (#4)
-- Implemented sorting tasks (#6)
-- Implemented setting deadlines (#5)
-- Implemented priority levels (#7)
-- Implemented savng tasks to file (#9)
-- Implemented loading tasks from file (#10)
-- Implemented saving completed status in JSON (#26)
+- Improve display format (#28)
+- Connect deadlibes to tasks (#27)
+- Improve delete using index (#24)
+- Improve mark completed using index (#25)
+- Validate deadline input (#36)
+- Improve input validation (#30)
+- Presist completed status in JSON (#29)
 
 ### What went well
 - Good collaboration within the team.
