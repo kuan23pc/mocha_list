@@ -55,16 +55,20 @@ Blockers
 - Marina: Ensuring constistent output formatting across all features.
 - Christina: Verifying behavior for edge cases in delete functionality.
 - Andjela: Finalizing validation rules for all input scenarios.
-- Isabella: Some complications related to system integration and data handling.
+- Isabella: Some complications related to system integration and data handling. 
 
-## day 4 
-Isabella: implemented saving of completed task status. task are now stored in JSON with both title and complation staus, so progress is not lost when the program restarts. So the issue i done
+## Day 4
 
-Marina: Improvd how tasks are displayed to make the output clearer and easier to read. Formatting was updated so tasks and their status are shown in a more strutured and user-frindly way. 
-Christina: Done with the issue, improved the deadine fetures by adding input validation, program now only accepts dates in the format yyy-mm-dd and rejects invalid or past dates. Updated the mark completed features to use task index insted of title. All issue done.
-Andjela: Improved input validation in the program, program now handles invalid user input more safely and prevents crashes by checking values before processing them
-Blockers:
-isabella- some problem with joson file
-Chrisitina- forgot to put in a svae function in issue so all changes diespered when exit
-Marina- Fix bug in json file
-Andjela- 
+## Day 5
+- Marina: Completed improve display and connect deadline to taks. Updated sprint files and reviewed other team members' code to ensure consistency. 
+- Christina: Completed improve delete using index, improve mark completed using index, and validate deadline input. Reviewed other's code and helped to improve their implementation. 
+- Andjela: Completed improve input validation and strengthened overall input handling to reduce errors. 
+- Isabella: Completed persist completed status in JSON and ensured correct saving and loading of task completition status. 
+
+Next steps: 
+- Perform full system testing. 
+- Fix any remaining minor bugs. 
+
+Blockers: 
+- Andjela: Initial uncertainity in defining validation rules, now resolved. 
+- Isabella: Needed to finalize JSON structure for persistence. 
