@@ -48,3 +48,19 @@ Blockers
 - Christina: Verifying behavior for edge cases in delete functionality.
 - Andjela: Finalizing validation rules for all input scenarios.
 - Isabella: Some complications related to system integration and data handling. 
+
+## Day 4
+
+## Day 5
+- Marina: Completed improve display and connect deadline to taks. Updated sprint files and reviewed other team members' code to ensure consistency. 
+- Christina: Completed improve delete using index, improve mark completed using index, and validate deadline input. Reviewed other's code and helped to improve their implementation. 
+- Andjela: Completed improve input validation and strengthened overall input handling to reduce errors. 
+- Isabella: Completed persist completed status in JSON and ensured correct saving and loading of task completition status. 
+
+Next steps: 
+- Perform full system testing. 
+- Fix any remaining minor bugs. 
+
+Blockers: 
+- Andjela: Initial uncertainity in defining validation rules, now resolved. 
+- Isabella: Needed to finalize JSON structure for persistence. 
