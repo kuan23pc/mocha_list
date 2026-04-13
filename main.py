@@ -1,3 +1,4 @@
+# Persist completed status feature
 import json
 import os
 
