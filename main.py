@@ -4,66 +4,40 @@ from datetime import datetime
 
 FILE_NAME = "tasks.json"
 
-
 def safe_input(prompt):
-    """Read input safely without crashing on Ctrl+C or EOF."""
     try:
         return input(prompt).strip()
     except (EOFError, KeyboardInterrupt):
         print("\nInput cancelled.")
         return None
 
-
-# Load tasks from file if it exists, otherwise return empty list
+# load task from file if it exists, otherwise return empty list
 def load_tasks():
-    if not os.path.exists(FILE_NAME):
-        return []
-
-    try:
-        with open(FILE_NAME, "r") as file:
-            data = json.load(file)
-
-            if not isinstance(data, list):
-                print("Warning: tasks.json has an invalid format. Starting with an empty task list.")
+    if os.path.exists(FILE_NAME):
+        try:
+            with open(FILE_NAME, "r") as file:
+                data = json.load(file)
+                if isinstance(data, list):
+                    return data
+                print("Invalid task file format. Starting with an empty list.")
                 return []
-
-            valid_tasks = []
-            for task in data:
-                if isinstance(task, dict) and "title" in task and "completed" in task:
-                    if not isinstance(task["title"], str):
-                        continue
-                    if not isinstance(task["completed"], bool):
-                        continue
-
-                    if "deadline" not in task:
-                        task["deadline"] = None
-
-                    valid_tasks.append(task)
-
-            if len(valid_tasks) != len(data):
-                print("Warning: Some invalid tasks were ignored.")
-
-            return valid_tasks
-
-    except json.JSONDecodeError:
-        print("Warning: tasks.json is corrupted or invalid. Starting with an empty task list.")
-        return []
-    except OSError as error:
-        print(f"Error reading file: {error}")
-        return []
-
+        except json.JSONDecodeError:
+            print("Invalid JSON file. Starting with an empty list.")
+            return []
+        except OSError as error:
+            print(f"Error reading file: {error}")
+            return []
+    return []
 
 tasks = load_tasks()
 
-
-# Save tasks to json file
+# save tasks to json file
 def save_tasks():
     try:
         with open(FILE_NAME, "w") as file:
             json.dump(tasks, file, indent=4)
     except OSError as error:
         print(f"Error saving file: {error}")
-
 
 # Function to add a new task
 def add_task():
@@ -83,8 +57,7 @@ def add_task():
     save_tasks()
     print(f"Task '{task}' added!")
 
-
-# Display all tasks with their completion status
+# display all tasks with their completion status
 def show_tasks():
     if not tasks:
         print("👎 No tasks available. Add a new task!")
@@ -98,12 +71,13 @@ def show_tasks():
 
     for i, task in enumerate(tasks, start=1):
         status = "✅ Completed" if task["completed"] else "❌ Not Completed"
+
         deadline = task.get("deadline")
         deadline_text = f" (Deadline: {deadline})" if deadline else ""
+
         print(f"{i}. {task['title']}{deadline_text}: {status}")
 
-
-# Function to delete a task
+# Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
         print("No tasks available to delete.")
@@ -133,8 +107,7 @@ def delete_tasks():
     save_tasks()
     print(f"Task '{removed_task['title']}' deleted!")
 
-
-# Function to mark a task as completed
+# Function to MARK a task as COMPLETED CO
 def mark_task_completed():
     if not tasks:
         print("No tasks available.")
@@ -164,21 +137,19 @@ def mark_task_completed():
     save_tasks()
     print(f"Task '{tasks[index]['title']}' marked as completed!")
 
-
-def sort_tasks(task_list):
-    if not task_list:
+# optional: add deadline to a task(not integrated)
+def sort_tasks(tasks):
+    if not tasks:
         return []
-    return sorted(task_list, key=lambda task: task["title"].lower())
+    return sorted(tasks)
 
-
-# Function for deadline
+# function for deadline
 def set_deadline():
     if not tasks:
         print("No tasks available.")
         return
 
     show_tasks()
-
     choice = safe_input("Enter task number to set deadline: ")
     if choice is None:
         return
@@ -219,8 +190,8 @@ def set_deadline():
 
     tasks[index]["deadline"] = deadline
     save_tasks()
-    print(f"⏰ Deadline added to '{tasks[index]['title']}'!")
 
+    print(f"⏰ Deadline added to '{tasks[index]['title']}'!")
 
 # Main program loop
 while True:
@@ -236,7 +207,7 @@ while True:
         continue
 
     if choice not in {"1", "2", "3", "4", "5", "6"}:
-        print("Invalid choice. Please enter a number from 1 to 6.")
+        print("Invalid choice. Please try again.")
         continue
 
     if choice == "1":
@@ -250,5 +221,6 @@ while True:
     elif choice == "5":
         set_deadline()
     elif choice == "6":
-        print("Goodbye!")
         break
+    else:
+        print("Invalid choice. Please try again.")
