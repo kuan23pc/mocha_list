@@ -17,3 +17,8 @@ Isabella: implemented saving of completed task status. task are now stored in JS
 Marina: Improvd how tasks are displayed to make the output clearer and easier to read. Formatting was updated so tasks and their status are shown in a more strutured and user-frindly way. 
 Christina: Done with the issue, improved the deadine fetures by adding input validation, program now only accepts dates in the format yyy-mm-dd and rejects invalid or past dates. Updated the mark completed features to use task index insted of title. All issue done.
 Andjela: Improved input validation in the program, program now handles invalid user input more safely and prevents crashes by checking values before processing them
+Blockers:
+isabella- some problem with joson file
+Chrisitina- forgot to put in a svae function in issue so all changes diespered when exit
+Marina- Fix bug in json file
+Andjela- 
