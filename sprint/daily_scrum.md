@@ -47,4 +47,15 @@ Blockers
 - Marina: Ensuring constistent output formatting across all features.
 - Christina: Verifying behavior for edge cases in delete functionality.
 - Andjela: Finalizing validation rules for all input scenarios.
-- Isabella: Some complications related to system integration and data handling. 
+- Isabella: Some complications related to system integration and data handling.
+
+## Day 4 
+- Marina:
+- Chrisina:
+- Andjela:
+- Isablle:
+
+Next steps:
+
+
+Blockers:
