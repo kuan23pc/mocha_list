@@ -1,22 +1,42 @@
+import unittest
 import main
+import builtins
 
-def test_add_task(monkeypatch):
-    #Replace input() so it returns a fixed value for testing
-    monkeypatch.setattr("builtins.input", lambda _: "Test task")
+class TestAddTask(unittest.TestCase):
 
-    #Disable saving to file to avoid modifying tasks.json
-    monkeypatch.setattr(main, "save_tasks", lambda: None)
+    def setUp(self):
+        self.original_input = main.safe_input
+        self.original_save = main.save_tasks
+        self.original_print = builtins.print
 
-    # Reset the global tasks list before running the test
-    main.tasks = []
+        main.tasks = [] #Reset tasks before each test
 
-    #Call the fun. we want to test
-    main.add_task()
+        #Replace input with fixed value
+        main.safe_input = lambda _: "Test task"
 
-    #Verify that one task is added
-    assert len(main.tasks) == 1
+        #Disable file writing
+        main.save_tasks = lambda: None
 
-    #Verify the task content
-    assert main.tasks[0]["title"] == "Test task"
-    assert main.tasks[0]["completed"] is False
-    assert main.tasks[0]["deadline"] is None
+        #Disable print output
+        builtins.print = lambda *args, **kwargs: None
+
+    def tearDown(self):
+        #Restore original functions
+        main.safe_input = self.original_input
+        main.save_tasks = self.original_save
+        builtins.print = self.original_print
+
+    def test_add_task(self):
+        #Run function
+        main.add_task()
+
+        #Check that one task was added
+        self.assertEqual(len(main.tasks), 1)
+
+        #Check content
+        self.assertEqual(main.tasks[0]["title"], "Test task")
+        self.assertFalse(main.tasks[0]["completed"])
+        self.assertIsNone(main.tasks[0]["deadline"])
+
+if __name__ == "__main__":
+    unittest.main()
