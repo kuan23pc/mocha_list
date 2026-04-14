@@ -74,4 +74,12 @@ You can find our Kanban Board here: https://github.com/users/kuan23pc/projects/1
 - Code reviews will be done by team members
 - No direct commits to the main branch 
  
+ ## How to run the unit tests
+To run all unit tests, make sure you are in the root directory of the project. 
 
+Run the following command in the terminal: 
+python -m unittest discover
+
+This command will automatically find and execute all unit tests in the project.
+
+The tests verify different functionalities of the system, including task creation, completion, and handling of invalid input. 
