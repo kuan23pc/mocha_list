@@ -194,33 +194,38 @@ def set_deadline():
     print(f"⏰ Deadline added to '{tasks[index]['title']}'!")
 
 #Main program loop
-while True:
-    print("\n1. Add task")
-    print("2. Show tasks")
-    print("3. Delete tasks")
-    print("4. Mark task as completed")
-    print("5. Set deadline")
-    print("6. Exit")
+def main ():
+    while True:
+        print("\n1. Add task")
+        print("2. Show tasks")
+        print("3. Delete tasks")
+        print("4. Mark task as completed")
+        print("5. Set deadline")
+        print("6. Exit")
 
-    choice = safe_input("Choose an option: ")
-    if choice is None:
-        continue
+        choice = safe_input("Choose an option: ")
+        if choice is None:
+            continue
 
-    if choice not in {"1", "2", "3", "4", "5", "6"}:
-        print("Invalid choice. Please try again.")
-        continue
+        if choice not in {"1", "2", "3", "4", "5", "6"}:
+            print("Invalid choice. Please try again.")
+            continue
 
-    if choice == "1":
-        add_task()
-    elif choice == "2":
-        show_tasks()
-    elif choice == "3":
-        delete_tasks()
-    elif choice == "4":
-        mark_task_completed()
-    elif choice == "5":
-        set_deadline()
-    elif choice == "6":
-        break
-    else:
-        print("Invalid choice. Please try again.")
+        if choice == "1":
+            add_task()
+        elif choice == "2":
+            show_tasks()
+        elif choice == "3":
+            delete_tasks()
+        elif choice == "4":
+            mark_task_completed()
+        elif choice == "5":
+            set_deadline()
+        elif choice == "6":
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
