@@ -58,6 +58,15 @@ Blockers
 - Isabella: Some complications related to system integration and data handling. 
 
 ## Day 4
+- isabella: Tried to fix the branch problem
+- marina: finshed everything helped isabella
+- christina : finished evertyinh also helped isabella
+- Andjela: almost compted her issues
+
+blockers :
+- isabella: problem with branch and pull request
+- christina: some problem with the file
+- Andjela : problem with her issue
 
 ## Day 5
 - Marina: Completed improve display and connect deadline to taks. Updated sprint files and reviewed other team members' code to ensure consistency. 
