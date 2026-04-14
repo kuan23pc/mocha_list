@@ -79,7 +79,7 @@ To run all unit tests, make sure you are in the root directory of the project.
 
 Run the following command in the terminal: 
 
-python -m unittest discover
+python -m unittest discover -s unit_tests
 
 
 This command will automatically find and execute all unit tests in the project.
@@ -92,7 +92,7 @@ To generate code coverage, install coverage:
 python -m pip install coverage
 
 
-un the tests with coverage: 
+Run the tests with coverage: 
 
 python -m coverage run -m unittest discover -s unit_tests
 
