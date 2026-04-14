@@ -1,7 +1,7 @@
 import main
 
 def test_add_task(monkeypatch):
-    #Replace input() so it automatically returns "Test task"
+    #Replace input() so it returns a fixed value for testing
     monkeypatch.setattr("builtins.input", lambda _: "Test task")
 
     #Disable saving to file to avoid modifying tasks.json
