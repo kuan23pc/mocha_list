@@ -77,4 +77,40 @@ You can find our Kanban Board here: [Kanban Board](https://github.com/users/kuan
 - Code reviews will be done by team members
 - No direct commits to the main branch 
  
+ ## How to run the unit tests
+To run all unit tests, make sure you are in the root directory of the project. 
 
+Run the following command in the terminal: 
+
+python -m unittest discover -s unit_tests
+
+
+This command will automatically find and execute all unit tests in the project.
+
+The tests verify different functionalities of the system, including task creation, completion, and handling of invalid input. 
+
+## Coverage
+To generate code coverage, install coverage: 
+
+python -m pip install coverage
+
+
+Run the tests with coverage: 
+
+python -m coverage run -m unittest discover -s unit_tests
+
+
+Then generate a report: 
+
+python -m coverage report
+
+## How to run a linter
+To check code quality, install flake8: 
+
+python -m pip install flake8
+
+Run the linter: 
+
+python -m flake8 .
+
+This will analyze the code and display any style or formatting issues.
