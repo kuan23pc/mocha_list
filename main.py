@@ -77,6 +77,8 @@ def show_tasks():
 
         print(f"{i}. {task['title']}{deadline_text}: {status}")
 
+
+
 #Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
