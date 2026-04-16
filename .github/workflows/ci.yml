@@ -19,3 +19,6 @@ jobs:
 
       - name: Check syntax
         run: python -m py_compile main.py
+
+      - name: Run unit tests
+        run. pyhon -m unittest discover -s unit_tests -p "test*.py" -v 
