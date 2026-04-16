@@ -1,22 +1,7 @@
 [
     {
-        "title": "gym",
+        "title": "Test task",
         "completed": true,
-        "deadline": "2026-04-09"
-    },
-    {
-        "title": "math",
-        "completed": false,
-        "deadline": null
-    },
-    {
-        "title": "gym",
-        "completed": false,
-        "deadline": null
-    },
-    {
-        "title": "gym",
-        "completed": false,
         "deadline": null
     }
 ]
