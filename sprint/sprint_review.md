@@ -1,4 +1,4 @@
-#Sprint Review
+# Sprint Review
 
 During this sprint, we implemented serveral improvements and core features for our task management application. 
 
