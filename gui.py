@@ -1,116 +1,117 @@
 #GUI module for the task manager application
-# Allows users to manage tasks visually instead of using the CLI
+# Allowing users to manage tasks visually instead of using the CLI
 import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import simpledialog, messagebox, ttk
 from datetime import datetime
 from main import tasks, save_tasks
 
+#Global state variables used for filtering and list navigation
 current_filter = "all"
 current_list_index = 0
 
-#Data helpers
+#Data helper func.:
 
-#Ensures that task data has the correct structure
+#Ensures that task data follows the expected structure
 def normalize_data():
     global current_list_index
 
-    #if tasks are in old format, convert to a default list
+    # if tasks are in old format, convert to a default list structure
     if len(tasks) > 0 and "title" in tasks[0] and "completed" in tasks[0]:
-        old_tasks = tasks[:]
-        tasks.clear()
-        tasks.append({
+        old_tasks = tasks[:] # Copy existing tasks
+        tasks.clear() # Clear current structure
+        tasks.append({ # Wrap old tasks into a default list structure
             "title": "My List",
             "tasks": old_tasks
         })
 
-    #Ensure each list has required structure
+    # Ensure each list has required structure
     for task_list in tasks:
-        #Add deault title if missing
+        # Add deault title if missing
         if "title" not in task_list:
             task_list["title"] = "Untitled List"
-        #Ensure tasks key exists and is not a list
+        # Ensure tasks key exists and is not a list
         if "tasks" not in task_list or not isinstance(task_list["tasks"], list):
             task_list["tasks"] = []
-        #Validate each individual task
+        # Validate each individual task
         for task in task_list["tasks"]:
             if "title" not in task:
-                task["title"] = "Untitled Task"
+                task["title"] = "Untitled Task" # set deafult title if missing
             if "completed" not in task:
-                task["completed"] = False
+                task["completed"] = False # ensure completed status exists
             if "deadline" not in task:
-                task["deadline"] = None
+                task["deadline"] = None # ensure deadline field exists
             if "description" not in task:
-                task["description"] = ""
+                task["description"] = "" # ensure description field exists
 
     #Adjust current list index to stay within bounds
     if len(tasks) == 0:
         current_list_index = -1
     elif current_list_index >= len(tasks):
-        current_list_index = len(tasks) - 1
+        current_list_index = len(tasks) - 1 # move to last vaild index 
 
 #returns tasks from the currently selected list
 def get_current_tasks():
     if current_list_index == -1 or not tasks:
         return []
-    return tasks[current_list_index]["tasks"]
+    return tasks[current_list_index]["tasks"] # return tasks of active list
 
 #Returns the title of the currently selected list
 def get_current_list_title():
     if current_list_index == -1 or not tasks:
         return "No List Selected"
-    return tasks[current_list_index]["title"]
+    return tasks[current_list_index]["title"] # Return active list title
 
 
-#Placeholder config. for input field
+# Placeholder config. for input field
 PLACEHOLDER_TEXT = "Add a new task..."
 PLACEHOLDER_COLOR = "#d87093"
 NORMAL_ENTRY_COLOR = "black"
 
-#Insert placeholder text if input field is empty
+# Insert placeholder text if input field is empty
 def set_placeholder():
     if entry.get() == "":
         entry.insert(0, PLACEHOLDER_TEXT)
         entry.config(fg=PLACEHOLDER_COLOR)
 
-#Clears placeholder text when user starts typing
+# Clears placeholder text when user starts typing
 def clear_placeholder(event=None):
     if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
-        entry.delete(0, tk.END)
-        entry.config(fg=NORMAL_ENTRY_COLOR)
+        entry.delete(0, tk.END) # Remove placeholder text
+        entry.config(fg=NORMAL_ENTRY_COLOR) # restore normal text color
 
-#restores placeholder if input field is left empty
+# restores placeholder if input field is left empty
 def restore_placeholder(event=None):
     if entry.get().strip() == "":
-        entry.delete(0, tk.END)
-        set_placeholder()
+        entry.delete(0, tk.END) # clear whitespaces
+        set_placeholder() # reinsert placeholder text
 
-#Ensures placeholder disapperas correctly when typing begins
+# Ensures placeholder disapperas correctly when typing begins
 def handle_placeholder_typing(event):
     if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
-        entry.delete(0, tk.END)
-        entry.config(fg=NORMAL_ENTRY_COLOR)
+        entry.delete(0, tk.END) # remove placeholder text
+        entry.config(fg=NORMAL_ENTRY_COLOR) # switch to normal text color
 
 
-#Light effect for add task button to give visual feedback
+# Light effect for add task button to give visual feedback
 def flash_add_button():
     original_bg = add_button.cget("bg")
     original_active_bg = add_button.cget("activebackground")
-    add_button.config(bg="#fff4a3", activebackground="#fff4a3")
-    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg))
+    add_button.config(bg="#fff4a3", activebackground="#fff4a3") # change color to highlight button
+    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg)) # restore original colors after short delay
 
-#Validates deadline input (format and future date)
+# Validates deadline input (format and future date)
 def validate_deadline(deadline_text):
     if deadline_text == "":
         return True, None
 
-    #Check correct date format
+    # check correct date format
     try:
         parsed_deadline = datetime.strptime(deadline_text, "%Y-%m-%d").date()
     except ValueError:
         return False, "Please enter a valid date in YYYY-MM-DD format."
 
-    #Ensures deadline is not in the past
+    # Ensures deadline is not in the past
     today = datetime.today().date()
     if parsed_deadline < today:
         return False, "Please enter a valid date that has not passed."
@@ -121,42 +122,43 @@ def validate_deadline(deadline_text):
 #Sidebar list functions, selects a list from the sidebar and refreshes UI
 def select_list(index):
     global current_list_index
-    if 0 <= index < len(tasks):
-        current_list_index = index
-        refresh_all()
-
+    if 0 <= index < len(tasks): # ensure index is within vaild tange
+        current_list_index = index # update selected list
+        refresh_all() 
+# create a new list via user input
 def create_new_list():
     title = simpledialog.askstring("New List", "Enter list title:")
     if title is None:
         return
 
-    title = title.strip()
+    title = title.strip() # prevent empty list titles
     if title == "":
         messagebox.showerror("Invalid title", "List title cannot be empty.")
         return
-    #Add new list structure
+    # Add new list structure
     tasks.append({
         "title": title,
         "tasks": []
     })
     save_tasks()
-    #set new list as current
+    # set new list as current active list
     global current_list_index
     current_list_index = len(tasks) - 1
     refresh_all()
 
-#Renames the currenly selected list
+# Renames the currenly selected list
 def rename_current_list():
-    if not tasks or current_list_index == -1:
+    if not tasks or current_list_index == -1: # check if a list is selected
         messagebox.showinfo("Rename List", "There is no list to rename.")
         return
-    
+    # get current title and prompt user for new title
     current_title = tasks[current_list_index]["title"]
     new_title = simpledialog.askstring("Rename List", "Enter new list title:", initialvalue=current_title)
     if new_title is None:
         return
 
     new_title = new_title.strip()
+    # Prevent empty titles
     if new_title == "":
         messagebox.showerror("Invalid title", "List title cannot be empty.")
         return
@@ -165,7 +167,7 @@ def rename_current_list():
     save_tasks()
     refresh_all()
 
-#Deleted the currenly selected list
+# Deleted the currenly selected list
 def delete_current_list():
     global current_list_index
 
@@ -175,7 +177,10 @@ def delete_current_list():
 
     title = tasks[current_list_index]["title"]
     #Ask user for confirmation
-    confirm = messagebox.askyesno("Delete List", f"Are you sure you want to delete the list '{title}'?")
+    confirm = messagebox.askyesno
+    ("Delete List", 
+     f"Are you sure you want to delete the list '{title}'?"
+    )
     if not confirm:
         return
 
@@ -191,13 +196,13 @@ def delete_current_list():
     refresh_all()
 
 
-#Filter functions, sets active filter (all/active/completed)
+# Filter functions, sets active filter (all/active/completed)
 def set_filter(filter_name):
     global current_filter
     current_filter = filter_name
     refresh_all()
 
-#Updates filter button styles vased on selected filter
+# Updates filter button styles vased on selected filter
 def update_filter_buttons():
     active_bg = "#f4a6c1"
     inactive_bg = "#ffb6c1"
@@ -206,7 +211,7 @@ def update_filter_buttons():
     active_button.config(bg=active_bg if current_filter == "active" else inactive_bg)
     completed_button.config(bg=active_bg if current_filter == "completed" else inactive_bg)
 
-#Each item includes the original index and the task itself. 
+# Each item includes the original index and the task itself. 
 def get_filtered_tasks():
     filtered = []
     current_tasks = get_current_tasks()
@@ -221,7 +226,7 @@ def get_filtered_tasks():
     return filtered
 
 
-#counter/progress/title, updates task statistics and progress bar
+# counter/progress/title, updates task statistics and progress bar
 def update_counter():
     current_tasks = get_current_tasks()
     total = len(current_tasks)
@@ -237,19 +242,19 @@ def update_counter():
     progress_label.config(text=f"Progress: {percent}%")
     progress_bar["value"] = percent
 
-#Updates the title of the currenly selected list
+# Updates the title of the currenly selected list
 def update_main_title():
     list_title_label.config(text=get_current_list_title())
 
 
-#Task functions, toggles task completion status when checkbar is clicked
+# Task functions, toggles task completion status when checkbar is clicked
 def toggle_task(index, var):
     current_tasks = get_current_tasks()
     current_tasks[index]["completed"] = bool(var.get())
     save_tasks()
     refresh_all()
 
-#Deletes a task after confirmation
+# Deletes a task after confirmation
 def delete_task_gui(index):
     current_tasks = get_current_tasks()
 
@@ -264,7 +269,7 @@ def delete_task_gui(index):
     save_tasks()
     refresh_all()
 
-#Removes all completed tasks from the current list
+# Removes all completed tasks from the current list
 def clear_completed_gui():
     if current_list_index == -1 or not tasks:
         messagebox.showinfo("Clear Completed", "There is no list selected.")
@@ -285,12 +290,12 @@ def clear_completed_gui():
     if not confirm:
         return
 
-   #Keep only tasks that are not completed
+   # Keep only tasks that are not completed
     current_tasks[:] = [task for task in current_tasks if not task["completed"]]
     save_tasks()
     refresh_all()
 
-#Opens a new window to edit tasks details
+# Opens a new window to edit tasks details
 def open_edit_window(index):
     current_tasks = get_current_tasks()
     task = current_tasks[index]
@@ -303,7 +308,7 @@ def open_edit_window(index):
     edit_window.grab_set()
     edit_window.resizable(False, False)
     
-    #Task title
+    # Task title
     title_label = tk.Label(
         edit_window,
         text="Task Name",
@@ -322,7 +327,7 @@ def open_edit_window(index):
     title_entry.pack(padx=20, fill="x")
     title_entry.insert(0, task["title"])
 
-    #Deadline
+    # Deadline
     deadline_label = tk.Label(
         edit_window,
         text="Deadline (YYYY-MM-DD)",
@@ -358,7 +363,7 @@ def open_edit_window(index):
     description_text.pack(padx=20, fill="both")
     description_text.insert("1.0", task.get("description", ""))
 
-    #Save edited values
+    # Save edited values
     def save_edit():
         new_title = title_entry.get().strip()
         new_deadline = deadline_entry.get().strip()
@@ -383,11 +388,11 @@ def open_edit_window(index):
         edit_window.destroy()
         refresh_all()
 
-    #Button container
+    # Button container
     button_frame = tk.Frame(edit_window, bg="#ffd9e8")
     button_frame.pack(pady=20)
 
-    #Button to save changes made in edit window
+    # Button to save changes made in edit window
     save_button = tk.Button(
         button_frame,
         text="Save Changes",
@@ -400,7 +405,7 @@ def open_edit_window(index):
     )
     save_button.pack(side="left", padx=8)
     
-    #Button to cancel editing and close window
+    # Button to cancel editing and close window
     cancel_button = tk.Button(
         button_frame,
         text="Cancel",
@@ -413,7 +418,7 @@ def open_edit_window(index):
     )
     cancel_button.pack(side="left", padx=8)
 
-#Sets/updates a deadline for a specific task via dialog input
+# Sets/updates a deadline for a specific task via dialog input
 def set_deadline_gui(index):
     current_tasks = get_current_tasks()
 
@@ -433,9 +438,9 @@ def set_deadline_gui(index):
     save_tasks()
     refresh_all()
 
-#Adds a new task from GUI input field
+# Adds a new task from GUI input field
 def add_task_gui():
-    #Ensures a list is selected
+    # Ensures a list is selected
     if current_list_index == -1 or not tasks:
         messagebox.showerror("No List", "Create a list before adding a task.")
         return
@@ -449,7 +454,7 @@ def add_task_gui():
     if task_title == "":
         return
 
-    #Add new task to currect list
+    # Add new task to currect list
     current_tasks = get_current_tasks()
     current_tasks.append({
         "title": task_title,
@@ -476,7 +481,7 @@ def refresh_sidebar():
     for widget in sidebar_lists_frame.winfo_children():
         widget.destroy()
 
-    #Show message if no lists exists
+    # Show message if no lists exists
     if not tasks:
         empty_label = tk.Label(
             sidebar_lists_frame,
@@ -488,7 +493,7 @@ def refresh_sidebar():
         empty_label.pack(padx=8, pady=8, anchor="w")
         return
 
-    #creates buttons for each list
+    # creates buttons for each list
     for index, task_list in enumerate(tasks):
         bg_color = "#f4a6c1" if index == current_list_index else "#ffb6c1"
 
@@ -506,13 +511,13 @@ def refresh_sidebar():
         )
         list_button.pack(fill="x", padx=8, pady=4)
 
-#Updates the task display area
+# Updates the task display area
 def refresh_tasks():
     for widget in tasks_frame.winfo_children():
         widget.destroy()
 
     filtered_tasks = get_filtered_tasks()
-    #Show message if no tasks/no matches
+    # Show message if no tasks/no matches
     if not filtered_tasks:
         current_tasks = get_current_tasks()
         empty_text = "Add your first task above!" if len(current_tasks) == 0 else "No tasks match this filter."
@@ -529,7 +534,7 @@ def refresh_tasks():
         empty_label.pack()
 
     else:
-        #Create UI rows for each task
+        # Create UI rows for each task
         for real_index, task in filtered_tasks:
             row = tk.Frame(
                 tasks_frame,
@@ -549,7 +554,7 @@ def refresh_tasks():
             top_line = tk.Frame(left_frame, bg="#ffe4ee")
             top_line.pack(fill="x", pady=(0, 4))
 
-            #Checkbox for completion toggle
+            # Checkbox for completion toggle
             checkbox = tk.Checkbutton(
                 top_line,
                 variable=completed_var,
@@ -562,7 +567,7 @@ def refresh_tasks():
             )
             checkbox.pack(side="left", padx=(0, 8))
 
-            #Visual status indicator
+            # Visual status indicator
             status_symbol = "✔" if task["completed"] else "✗"
             status_color = "green" if task["completed"] else "#c71565"
 
@@ -588,7 +593,7 @@ def refresh_tasks():
             )
             task_label.pack(side="left", fill="x", expand=True)
             
-            #Show deadline if it exists
+            # Show deadline if it exists
             deadline = task.get("deadline")
             if deadline:
                 deadline_label = tk.Label(
@@ -616,7 +621,7 @@ def refresh_tasks():
                 )
                 description_label.pack(fill="x", padx=(40, 0), pady=(2, 0))
 
-            #Action buttoms (edit, deadline, delete)
+            # Action buttoms (edit, deadline, delete)
             button_frame = tk.Frame(row, bg="#ffe4ee")
             button_frame.pack(side="right", padx=(20, 0))
 
