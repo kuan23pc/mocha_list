@@ -1,6 +1,5 @@
 import unittest
 import main
-import builtins
 from io import StringIO
 import sys
 from datetime import datetime, timedelta
@@ -8,7 +7,7 @@ from datetime import datetime, timedelta
 class TestShowTasks(unittest.TestCase):
 
     def setUp(self):
-        #Save original stdout
+        # Save original stdout
         self.original_stdout = sys.stdout
 
         #Reset tasks before each test
@@ -19,7 +18,7 @@ class TestShowTasks(unittest.TestCase):
         sys.stdout = self.captured_output
 
     def tearDown(self):
-        #Restore stdout
+        # Restore stdout
         sys.stdout = self.original_stdout
 
     def test_show_tasks_with_data(self):
