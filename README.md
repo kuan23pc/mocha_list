@@ -5,7 +5,7 @@
 Group project for software engineering course 
 
 ## Project description 
-This project aims to develop a task management system that enables users to create, organize, and track tasks. The system is designed to help users manage their daily activities and improve productivity. In addition, it allows users to keep track of deadlines in a structured way.
+This project aims to develop a task management system that enables users to create, organize, and track tasks. The system is designed to help users manage their daily activties and improve productivity. In addition, it alows users to keep track of deadlines in a structured way.
 
 ## Team members
 
@@ -60,13 +60,21 @@ To run the program, follow these steps:
   1. Open a terminal
   2. Clone the repository:
     
-     git clone https://github.com/kuan23pc/group_project.git
-  3. Navigate to the project folder: 
+    ```bash
+   git clone https://github.com/kuan23pc/group_project.git
+   ```
+
+  3. Navigate to the project folder by writing: 
      
+     ```bash
      cd group_project
-  4. Run the program: 
+     ```
+
+  4. Run the program by writing: 
      
+     ```bash
      python main.py
+     ```
 
 ## Kanban Board 
 You can find our Kanban Board here: [Kanban Board](https://github.com/users/kuan23pc/projects/1)
@@ -82,35 +90,44 @@ To run all unit tests, make sure you are in the root directory of the project.
 
 Run the following command in the terminal: 
 
+```bash
 python -m unittest discover -s unit_tests
-
+```
 
 This command will automatically find and execute all unit tests in the project.
 
 The tests verify different functionalities of the system, including task creation, completion, and handling of invalid input. 
 
-## Coverage
+## Code Coverage
 To generate code coverage, install coverage: 
 
+```bash
 python -m pip install coverage
+```
 
+Run the tests with coverage:
 
-Run the tests with coverage: 
-
+```bash
 python -m coverage run -m unittest discover -s unit_tests
-
+```
 
 Then generate a report: 
 
+```bash
 python -m coverage report
+```
 
 ## How to run a linter
 To check code quality, install flake8: 
 
+```bash
 python -m pip install flake8
+```
 
 Run the linter: 
 
+```bash
 python -m flake8 .
+```
 
 This will analyze the code and display any style or formatting issues.
