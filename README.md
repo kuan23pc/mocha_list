@@ -57,20 +57,18 @@ The application is executed using the Python interpreter and does not depend on 
 The program is a console-based task manager written in Python. 
 
 To run the program, follow these steps: 
-  1. Open a terminal
-  2. Clone the repository:
+1. Open a terminal
+2. Clone the repository:
     
     ```bash
    git clone https://github.com/kuan23pc/group_project.git
    ```
-
-  3. Navigate to the project folder by writing: 
+3. Navigate to the project folder by writing: 
      
      ```bash
      cd group_project
      ```
-
-  4. Run the program by writing: 
+4. Run the program by writing: 
      
      ```bash
      python main.py
