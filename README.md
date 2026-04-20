@@ -61,7 +61,7 @@ To run the program, follow these steps:
 2. Clone the repository:
     
     ```bash
-   git clone https://github.com/kuan23pc/group_project.git
+   git clone https://github.com/kuan23pc/mocha_list.git
    ```
 3. Navigate to the project folder by writing: 
      
