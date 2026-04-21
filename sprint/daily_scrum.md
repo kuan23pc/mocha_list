@@ -58,15 +58,23 @@ Blockers
 - Isabella: Some complications related to system integration and data handling. 
 
 ## Day 4
-- isabella: Tried to fix the branch problem
-- marina: finshed everything helped isabella
-- christina : finished evertyinh also helped isabella
-- Andjela: almost compted her issues
+- Isabella: Worked on resolving issueswith branches and pull requests.
+- Marina: Completed her tasks and assisted Isabella
+- Christina: Completed her task and also helped Isabella
+- Andjela: Almost completed her assigned issues
 
-blockers :
-- isabella: problem with branch and pull request
-- christina: some problem with the file
-- Andjela : problem with her issue
+Blockers:
+- isabella: Issues with branch management and pull requests
+- christina: Encountered some probems with file handling 
+- Andjela : Facing issues related to her assigned task
+
+Next steps:
+- Resolve remaining branch and pull requests issues
+- Fix file-related problems and ensure stability
+- Complete all remaining issues
+- Review and merge pending pull requests 
+- Countinue improving code quality and testing
+
 
 ## Day 5
 - Marina: Completed improve display and connect deadline to taks. Updated sprint files and reviewed other team members' code to ensure consistency. 
