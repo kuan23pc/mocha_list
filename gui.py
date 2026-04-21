@@ -670,28 +670,29 @@ def refresh_all():
 
 # GUI setup
 
-
 import ctypes
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("mochalist.app.1.0")
-
+# Set a custom app ID for Windows so the app can use its own icon properly
 
 normalize_data()
+# Make sure the task data is in the correct format before the GUI starts
 
 root = tk.Tk()
+# Create the main window
 
-
+# Try to load and set the app icon
 try:
     icon_image = tk.PhotoImage(file="icon.png")
     root.iconphoto(True, icon_image)
 except Exception:
     pass
 
-
+# Main window settings
 root.title("Mocha List")
 root.geometry("1220x760")
 root.configure(bg="#ffd9e8")
 
-
+# Progress bar style
 style = ttk.Style()
 style.theme_use("default")
 style.configure(
@@ -703,11 +704,11 @@ style.configure(
     darkcolor="#c71565"
 )
 
-
+# Fonts for normal and completed tasks
 normal_font = tkfont.Font(family="Times New Roman", size=15)
 completed_font = tkfont.Font(family="Times New Roman", size=15, overstrike=1)
 
-
+# Main container holds sidebar and main content area
 main_container = tk.Frame(root, bg="#ffd9e8")
 main_container.pack(fill="both", expand=True)
 
@@ -728,6 +729,7 @@ sidebar_title = tk.Label(
 sidebar_title.pack(pady=(20, 10))
 
 
+# Buttons for creating, renaming, and deleting lists
 new_list_button = tk.Button(
     sidebar,
     text="New List",
@@ -767,10 +769,11 @@ delete_list_button = tk.Button(
 delete_list_button.pack(pady=(5, 15))
 
 
+# Frame where the available lists will be displayed
 sidebar_lists_frame = tk.Frame(sidebar, bg="#f6bfd2")
 sidebar_lists_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
-# Content area
+# Main content area where tasks and controls are shown
 content = tk.Frame(main_container, bg="#ffd9e8")
 content.pack(side="left", fill="both", expand=True)
 
@@ -783,6 +786,7 @@ title_label = tk.Label(
 )
 title_label.pack(pady=(20, 8))
 
+# Shows the currently selected list name
 list_title_label = tk.Label(
     content,
     text="",
@@ -792,6 +796,7 @@ list_title_label = tk.Label(
 )
 list_title_label.pack(pady=(0, 8))
 
+# Shows task counters such as total/completed/remaining
 counter_label = tk.Label(
     content,
     text="",
@@ -801,6 +806,7 @@ counter_label = tk.Label(
 )
 counter_label.pack(pady=(0, 10))
 
+# Shows progress in text form
 progress_label = tk.Label(
     content,
     text="Progress: 0%",
@@ -811,6 +817,7 @@ progress_label = tk.Label(
 progress_label.pack(pady=(0, 6))
 
 
+# Progress bar for completed tasks
 progress_bar = ttk.Progressbar(
     content,
     style="Pink.Horizontal.TProgressbar",
@@ -820,10 +827,11 @@ progress_bar = ttk.Progressbar(
 )
 progress_bar.pack(pady=(0, 16))
 
+# Top frame contains task input and action buttons
 top_frame = tk.Frame(content, bg="#ffd9e8")
 top_frame.pack(pady=10)
 
-
+# Entry box for typing a new task
 entry = tk.Entry(
     top_frame,
     width=32,
@@ -833,12 +841,13 @@ entry = tk.Entry(
     fg=NORMAL_ENTRY_COLOR
 )
 entry.pack(side="left", padx=8, ipady=6)
-entry.bind("<Return>", add_task_with_enter)
-entry.bind("<FocusIn>", clear_placeholder)
-entry.bind("<FocusOut>", restore_placeholder)
+entry.bind("<Return>", add_task_with_enter)  # Add task when Enter is pressed
+entry.bind("<FocusIn>", clear_placeholder)  # Remove placeholder when entry gets focus
+entry.bind("<FocusOut>", restore_placeholder)   # Restore placeholder if entry is empty
 entry.bind("<KeyPress>", handle_placeholder_typing)
 
 
+# Button to add a new task
 add_button = tk.Button(
     top_frame,
     text="Add Task",
@@ -852,6 +861,7 @@ add_button = tk.Button(
 add_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
+# Button to remove all completed tasks
 clear_completed_button = tk.Button(
     top_frame,
     text="Clear Completed",
@@ -865,6 +875,7 @@ clear_completed_button = tk.Button(
 clear_completed_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
+# Filter section for showing all, active, or completed tasks
 filter_frame = tk.Frame(content, bg="#ffd9e8")
 filter_frame.pack(pady=(8, 16))
 
@@ -908,15 +919,18 @@ completed_button = tk.Button(
 completed_button.pack(side="left", padx=6)
 
 
+# Main area for the scrollable task list
 main_list_frame = tk.Frame(content, bg="#ffd9e8")
 main_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
 
+# Canvas + scrollbar setup makes the task list scrollable
 canvas = tk.Canvas(main_list_frame, bg="#ffd9e8", highlightthickness=0)
 scrollbar = tk.Scrollbar(main_list_frame, orient="vertical", command=canvas.yview)
 tasks_frame = tk.Frame(canvas, bg="#ffd9e8")
 
 
+# Update the scroll area whenever the task frame changes size
 tasks_frame.bind(
     "<Configure>",
     lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
@@ -927,12 +941,15 @@ tasks_frame.bind(
 def _on_mousewheel_windows(event):
     canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+# Scroll up on Linux
 def _on_mousewheel_linux_up(event):
     canvas.yview_scroll(-1, "units")
 
+# Scroll down on Linux
 def _on_mousewheel_linux_down(event):
     canvas.yview_scroll(1, "units")
 
+# Add mouse wheel scrolling to a widget and all its child widgets
 def bind_mousewheel(widget):
     widget.bind("<MouseWheel>", _on_mousewheel_windows)
     widget.bind("<Button-4>", _on_mousewheel_linux_up)
@@ -941,20 +958,22 @@ def bind_mousewheel(widget):
     for child in widget.winfo_children():
         bind_mousewheel(child)
 
+
+# Put the task frame inside the canvas and connect scrollbar
 canvas.create_window((0, 0), window=tasks_frame, anchor="nw")
 canvas.configure(yscrollcommand=scrollbar.set)
 
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
 
+# Start with placeholder text and refresh the whole GUI
 set_placeholder()
 refresh_all()
 
-
+# Enable scrolling in the task area
 bind_mousewheel(canvas)
 bind_mousewheel(tasks_frame)
 bind_mousewheel(main_list_frame)
 
-
-
+# Start the Tkinter event loop
 root.mainloop()
