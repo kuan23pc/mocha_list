@@ -1,18 +1,19 @@
-# group_project
+# Mocha List
 
 [![CI](https://github.com/kuan23pc/group_project/actions/workflows/ci.yml/badge.svg)](https://github.com/kuan23pc/group_project/actions)
-
-Group project for software engineering course 
+ 
 
 ## Project description 
-This project aims to develop a task management system that enables users to create, organize, and track tasks. The system is designed to help users manage their daily activties and improve productivity. In addition, it alows users to keep track of deadlines in a structured way.
+Mocha List is a task management system that allows users to create, organize, and track tasks. The system is designed to help users manage their daily activities and improve productivity. 
+
+The application supports deadlines and provides a structured way to manage tasks.
 
 ## Team members
 
 | Name | GitHub username |
 |------|------------------|
-| Andjela Kuzmanovski | @kuan23pc |
-| Isabella Laazar | @issaabellaa |
+| Andjela Kuzamanovski | @kuan23pc |
+| Isabella Lazar | @issaabellaa |
 | Christina Outra | @christinaoutra |
 | Marina Alramo | @marinaalr |
 
@@ -27,26 +28,35 @@ I, Isabella Lazar, declare that I am the sole author of the content I add to thi
 I, Christina Outra, declare that I am the sole author of the content I add to this repository.
    
 
-## Planned features 
+## Features 
 - Add new tasks
 - Delete existing tasks
 - Mark tasks as completed
 - Set and update deadlines
-- Sort tasks by deadline or priority
-- Assign priority levels using color indicators
+- Add descriptions to tasks
+- Filter tasks (all, active, completed)
 - View all tasks in a list
 - Save tasks in a file
 - Load tasks from a file
+- GUI interface for visual task management. 
 
 ## How it will work 
-The application runs as a command line interface. Users interact with the system by typing commands to add, remove, or update tasks. Each task can include a title, a deadline, and a priority level. In addition, tasks will be saved to a file so they remain available after the program is closed. When the program starts, it will load the previously saved tasks from the file. The system will provide feedback after each command. 
+The application can be used in two different ways: 
+
+### Command Line Interface (CLI)
+Users interact with the system by typing commands in the terminal. 
+
+### Graphical User Interface (GUI)
+Users can manage tasks visually using a Tkinter-based interface. 
+
+Both interfaces use the same data stored in a JSON file. 
 
 ## Programming Language
 The project is implemented in Python 3. 
 
 Python is used because it provides the necessary functionality for handling user input, data structures, and file operations in a console-based application. 
 
-The program is structured using object-oriented programming principles. 
+The program follows a modular structure with seperate functions for different responsibilities. 
 
 ## Build System 
 No external build system is required.
@@ -54,7 +64,7 @@ No external build system is required.
 The application is executed using the Python interpreter and does not depend on external libraries.
 
 ## How to Run the Project
-The program is a console-based task manager written in Python. 
+The program is a task manager that can be run as both a CLI and GUI application. 
 
 To run the program, follow these steps: 
 1. Open a terminal
@@ -66,12 +76,18 @@ To run the program, follow these steps:
 3. Navigate to the project folder by writing: 
      
      ```bash
-     cd group_project
+     cd mocha_list
      ```
 4. Run the program by writing: 
      
+     ### CLI
      ```bash
      python main.py
+     ```
+
+     ### GUI
+      ```bash
+     python gui.py
      ```
 
 ## Kanban Board 
