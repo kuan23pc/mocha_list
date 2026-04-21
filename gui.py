@@ -555,6 +555,7 @@ def refresh_tasks():
             top_line.pack(fill="x", pady=(0, 4))
 
             # Checkbox for completion toggle
+            # When clicked, it updates the task's "completed" field via toggle_task
             checkbox = tk.Checkbutton(
                 top_line,
                 variable=completed_var,
@@ -567,7 +568,7 @@ def refresh_tasks():
             )
             checkbox.pack(side="left", padx=(0, 8))
 
-            # Visual status indicator
+            # Visual status indicator if the task is completed/not
             status_symbol = "✔" if task["completed"] else "✗"
             status_color = "green" if task["completed"] else "#c71565"
 
