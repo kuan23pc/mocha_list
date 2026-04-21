@@ -1,1 +1,8 @@
-[]
+[
+    {
+        "title": "buy milk",
+        "completed": false,
+        "deadline": null,
+        "category": "personal"
+    }
+]
