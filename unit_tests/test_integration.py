@@ -7,11 +7,13 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         main.tasks.clear()
         self.test_file = "test_tasks.json"
+        self.original_file_name = main.FILE_NAME
         main.FILE_NAME = self.test_file
 
     def tearDown(self):
         if os.path.exists(self.test_file):
             os.remove(self.test_file)
+        main.FILE_NAME = self.original_file_name
     
     #Test 1: add, save, file exists
     def test_add_task(self):
@@ -42,7 +44,34 @@ class TestIntegration(unittest.TestCase):
 
     #Test 3: add, delete, file updated
 
+    def test_delete_task(self):
+        main.safe_input = lambda _: "Task C"
+        main.add_task()
+
+        main.safe_input = lambda _: "1"
+        main.delete_tasks()
+
+        with open(self.test_file) as f:
+            data = json.load(f)
+
+        self.assertEqual(len(data), 0)
+
+
     #Test 4: add, set deadline, saved
+    def test_set_deadline(self):
+        main.safe_input = lambda _: "Task D"
+        main.add_task()
+
+        inputs = iter(["1", "2099-12-31"])
+        main.safe_input = lambda _: next(inputs)
+
+        main.set_deadline()
+
+        with open(self.test_file) as f:
+            data = json.load(f)
+
+        self.assertEqual(data[0]["deadline"], "2099-12-31")
+
 
 
 if __name__ == "__main__":
