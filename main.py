@@ -18,9 +18,6 @@ def load_tasks():
             with open(FILE_NAME, "r") as file:
                 data = json.load(file)
                 if isinstance(data, list):
-                    for task in data:
-                        if "category" not in task:
-                            task["category"] = "Uncategorized"
                     return data
                 print("Invalid task file format. Starting with an empty list.")
                 return []
@@ -52,18 +49,10 @@ def add_task():
         print("Task cannot be empty.")
         return
 
-    category = safe_input("Enter category: ")
-    if category is None:
-        return
-
-    if category == "":
-        category = "Uncategorized"
-
     tasks.append({
         "title": task, 
         "completed": False,
-        "deadline" : None,
-        "category": category
+        "deadline" : None
     })
     save_tasks()
     print(f"Task '{task}' added!")
