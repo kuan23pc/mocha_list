@@ -86,9 +86,7 @@ def show_tasks():
         deadline = task.get("deadline")
         deadline_text = f" (Deadline: {deadline})" if deadline else ""
 
-        category = task.get("category", "Uncategorized")
-
-        print(f"{i}. {task['title']} [{category}]{deadline_text}: {status}")
+        print(f"{i}. {task['title']}{deadline_text}: {status}")
 
 
 
