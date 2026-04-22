@@ -64,8 +64,9 @@ Blockers
 - Andjela: Almost completed her assigned issues
 
 Blockers:
-- isabella: Issues with branch management and pull requests
-- christina: Encountered some probems with file handling 
+- Marina waiting for branch issues to be resolved before final integration
+- Isabella: Issues with branch management and pull requests
+- Christina: Encountered some probems with file handling 
 - Andjela : Facing issues related to her assigned task
 
 Next steps:
