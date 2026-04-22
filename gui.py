@@ -1,5 +1,5 @@
 # GUI module for the task manager application
-# Allows users to manage tasks visually instead of using the CLI
+# Allowing users to manage tasks visually instead of using the CLI
 import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import simpledialog, messagebox, ttk
@@ -12,24 +12,24 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("mochalist.app.1.0
 current_filter = "all"
 current_list_index = 0
 
-#Data helpers
+# Data helper func.:
 
-# Ensures that task data has the correct structure
+# Ensures that task data follows the expected structure
 def normalize_data():
     global current_list_index
 
-    # if tasks are in old format, convert to a default list
+    # if tasks are in old format, convert to a default list structure
     if len(tasks) > 0 and "title" in tasks[0] and "completed" in tasks[0]:
-        old_tasks = tasks[:]
-        tasks.clear()
-        tasks.append({
+        old_tasks = tasks[:] # Copy existing tasks
+        tasks.clear() # Clear current structure
+        tasks.append({ # Wrap old tasks into a default list structure
             "title": "My List",
             "tasks": old_tasks
         })
 
     # Ensure each list has required structure
     for task_list in tasks:
-        #Add deault title if missing
+        # Add deault title if missing
         if "title" not in task_list:
             task_list["title"] = "Untitled List"
         # Ensure tasks key exists and is not a list
@@ -38,31 +38,31 @@ def normalize_data():
         # Validate each individual task
         for task in task_list["tasks"]:
             if "title" not in task:
-                task["title"] = "Untitled Task"
+                task["title"] = "Untitled Task" # set deafult title if missing
             if "completed" not in task:
-                task["completed"] = False
+                task["completed"] = False # ensure completed status exists
             if "deadline" not in task:
-                task["deadline"] = None
+                task["deadline"] = None # ensure deadline field exists
             if "description" not in task:
-                task["description"] = ""
+                task["description"] = "" # ensure description field exists
 
     # Adjust current list index to stay within bounds
     if len(tasks) == 0:
         current_list_index = -1
     elif current_list_index >= len(tasks):
-        current_list_index = len(tasks) - 1
+        current_list_index = len(tasks) - 1 # move to last vaild index 
 
 # returns tasks from the currently selected list
 def get_current_tasks():
     if current_list_index == -1 or not tasks:
         return []
-    return tasks[current_list_index]["tasks"]
+    return tasks[current_list_index]["tasks"] # return tasks of active list
 
 # Returns the title of the currently selected list
 def get_current_list_title():
     if current_list_index == -1 or not tasks:
         return "No List Selected"
-    return tasks[current_list_index]["title"]
+    return tasks[current_list_index]["title"] # Return active list title
 
 
 # Placeholder config. for input field
@@ -79,28 +79,28 @@ def set_placeholder():
 # Clears placeholder text when user starts typing
 def clear_placeholder(event=None):
     if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
-        entry.delete(0, tk.END)
-        entry.config(fg=NORMAL_ENTRY_COLOR)
+        entry.delete(0, tk.END) # Remove placeholder text
+        entry.config(fg=NORMAL_ENTRY_COLOR) # restore normal text color
 
 # restores placeholder if input field is left empty
 def restore_placeholder(event=None):
     if entry.get().strip() == "":
-        entry.delete(0, tk.END)
-        set_placeholder()
+        entry.delete(0, tk.END) # clear whitespaces
+        set_placeholder() # reinsert placeholder text
 
 # Ensures placeholder disapperas correctly when typing begins
 def handle_placeholder_typing(event):
     if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
-        entry.delete(0, tk.END)
-        entry.config(fg=NORMAL_ENTRY_COLOR)
+        entry.delete(0, tk.END) # remove placeholder text
+        entry.config(fg=NORMAL_ENTRY_COLOR) # switch to normal text color
 
 
 # Light effect for add task button to give visual feedback
 def flash_add_button():
     original_bg = add_button.cget("bg")
     original_active_bg = add_button.cget("activebackground")
-    add_button.config(bg="#fff4a3", activebackground="#fff4a3")
-    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg))
+    add_button.config(bg="#fff4a3", activebackground="#fff4a3") # change color to highlight button
+    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg)) # restore original colors after short delay
 
 # Validates deadline input (format and future date)
 def validate_deadline(deadline_text):
@@ -124,16 +124,16 @@ def validate_deadline(deadline_text):
 # Sidebar list functions, selects a list from the sidebar and refreshes UI
 def select_list(index):
     global current_list_index
-    if 0 <= index < len(tasks):
-        current_list_index = index
-        refresh_all()
-
+    if 0 <= index < len(tasks): # ensure index is within vaild tange
+        current_list_index = index # update selected list
+        refresh_all() 
+# create a new list via user input
 def create_new_list():
     title = simpledialog.askstring("New List", "Enter list title:")
     if title is None:
         return
 
-    title = title.strip()
+    title = title.strip() # prevent empty list titles
     if title == "":
         messagebox.showerror("Invalid title", "List title cannot be empty.")
         return
@@ -143,23 +143,24 @@ def create_new_list():
         "tasks": []
     })
     save_tasks()
-    #set new list as current
+    # set new list as current active list
     global current_list_index
     current_list_index = len(tasks) - 1
     refresh_all()
 
 # Renames the currenly selected list
 def rename_current_list():
-    if not tasks or current_list_index == -1:
+    if not tasks or current_list_index == -1: # check if a list is selected
         messagebox.showinfo("Rename List", "There is no list to rename.")
         return
-    
+    # get current title and prompt user for new title
     current_title = tasks[current_list_index]["title"]
     new_title = simpledialog.askstring("Rename List", "Enter new list title:", initialvalue=current_title)
     if new_title is None:
         return
 
     new_title = new_title.strip()
+    # Prevent empty titles
     if new_title == "":
         messagebox.showerror("Invalid title", "List title cannot be empty.")
         return
@@ -178,7 +179,10 @@ def delete_current_list():
 
     title = tasks[current_list_index]["title"]
     #Ask user for confirmation
-    confirm = messagebox.askyesno("Delete List", f"Are you sure you want to delete the list '{title}'?")
+    confirm = messagebox.askyesno
+    ("Delete List", 
+     f"Are you sure you want to delete the list '{title}'?"
+    )
     if not confirm:
         return
 
@@ -390,7 +394,7 @@ def open_edit_window(index):
     button_frame = tk.Frame(edit_window, bg="#ffd9e8")
     button_frame.pack(pady=20)
 
-    #Button to save changes made in edit window
+    # Button to save changes made in edit window
     save_button = tk.Button(
         button_frame,
         text="Save Changes",
@@ -438,7 +442,7 @@ def set_deadline_gui(index):
 
 # Adds a new task from GUI input field
 def add_task_gui():
-    #Ensures a list is selected
+    # Ensures a list is selected
     if current_list_index == -1 or not tasks:
         messagebox.showerror("No List", "Create a list before adding a task.")
         return
@@ -552,7 +556,8 @@ def refresh_tasks():
             top_line = tk.Frame(left_frame, bg="#ffe4ee")
             top_line.pack(fill="x", pady=(0, 4))
 
-            #Checkbox for completion toggle
+            # Checkbox for completion toggle
+            # When clicked, it updates the task's "completed" field via toggle_task
             checkbox = tk.Checkbutton(
                 top_line,
                 variable=completed_var,
@@ -565,7 +570,7 @@ def refresh_tasks():
             )
             checkbox.pack(side="left", padx=(0, 8))
 
-            #Visual status indicator
+            # Visual status indicator if the task is completed/not
             status_symbol = "✔" if task["completed"] else "✗"
             status_color = "green" if task["completed"] else "#c71565"
 
@@ -619,7 +624,7 @@ def refresh_tasks():
                 )
                 description_label.pack(fill="x", padx=(40, 0), pady=(2, 0))
 
-            #Action buttoms (edit, deadline, delete)
+            # Action buttoms (edit, deadline, delete)
             button_frame = tk.Frame(row, bg="#ffe4ee")
             button_frame.pack(side="right", padx=(20, 0))
 
@@ -674,22 +679,24 @@ def refresh_all():
 # GUI setup
 
 normalize_data()
+# Make sure the task data is in the correct format before the GUI starts
 
 root = tk.Tk()
+# Create the main window
 
-
+# Try to load and set the app icon
 try:
     icon_image = tk.PhotoImage(file="icon.png")
     root.iconphoto(True, icon_image)
 except Exception:
     pass
 
-
+# Main window settings
 root.title("Mocha List")
 root.geometry("1220x760")
 root.configure(bg="#ffd9e8")
 
-
+# Progress bar style
 style = ttk.Style()
 style.theme_use("default")
 style.configure(
@@ -701,11 +708,11 @@ style.configure(
     darkcolor="#c71565"
 )
 
-
+# Fonts for normal and completed tasks
 normal_font = tkfont.Font(family="Times New Roman", size=15)
 completed_font = tkfont.Font(family="Times New Roman", size=15, overstrike=1)
 
-
+# Main container holds sidebar and main content area
 main_container = tk.Frame(root, bg="#ffd9e8")
 main_container.pack(fill="both", expand=True)
 
@@ -726,6 +733,7 @@ sidebar_title = tk.Label(
 sidebar_title.pack(pady=(20, 10))
 
 
+# Buttons for creating, renaming, and deleting lists
 new_list_button = tk.Button(
     sidebar,
     text="New List",
@@ -765,10 +773,11 @@ delete_list_button = tk.Button(
 delete_list_button.pack(pady=(5, 15))
 
 
+# Frame where the available lists will be displayed
 sidebar_lists_frame = tk.Frame(sidebar, bg="#f6bfd2")
 sidebar_lists_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
-# Content area
+# Main content area where tasks and controls are shown
 content = tk.Frame(main_container, bg="#ffd9e8")
 content.pack(side="left", fill="both", expand=True)
 
@@ -781,6 +790,7 @@ title_label = tk.Label(
 )
 title_label.pack(pady=(20, 8))
 
+# Shows the currently selected list name
 list_title_label = tk.Label(
     content,
     text="",
@@ -790,6 +800,7 @@ list_title_label = tk.Label(
 )
 list_title_label.pack(pady=(0, 8))
 
+# Shows task counters such as total/completed/remaining
 counter_label = tk.Label(
     content,
     text="",
@@ -799,6 +810,7 @@ counter_label = tk.Label(
 )
 counter_label.pack(pady=(0, 10))
 
+# Shows progress in text form
 progress_label = tk.Label(
     content,
     text="Progress: 0%",
@@ -809,6 +821,7 @@ progress_label = tk.Label(
 progress_label.pack(pady=(0, 6))
 
 
+# Progress bar for completed tasks
 progress_bar = ttk.Progressbar(
     content,
     style="Pink.Horizontal.TProgressbar",
@@ -818,10 +831,11 @@ progress_bar = ttk.Progressbar(
 )
 progress_bar.pack(pady=(0, 16))
 
+# Top frame contains task input and action buttons
 top_frame = tk.Frame(content, bg="#ffd9e8")
 top_frame.pack(pady=10)
 
-
+# Entry box for typing a new task
 entry = tk.Entry(
     top_frame,
     width=32,
@@ -831,12 +845,13 @@ entry = tk.Entry(
     fg=NORMAL_ENTRY_COLOR
 )
 entry.pack(side="left", padx=8, ipady=6)
-entry.bind("<Return>", add_task_with_enter)
-entry.bind("<FocusIn>", clear_placeholder)
-entry.bind("<FocusOut>", restore_placeholder)
+entry.bind("<Return>", add_task_with_enter)  # Add task when Enter is pressed
+entry.bind("<FocusIn>", clear_placeholder)  # Remove placeholder when entry gets focus
+entry.bind("<FocusOut>", restore_placeholder)   # Restore placeholder if entry is empty
 entry.bind("<KeyPress>", handle_placeholder_typing)
 
 
+# Button to add a new task
 add_button = tk.Button(
     top_frame,
     text="Add Task",
@@ -850,6 +865,7 @@ add_button = tk.Button(
 add_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
+# Button to remove all completed tasks
 clear_completed_button = tk.Button(
     top_frame,
     text="Clear Completed",
@@ -863,6 +879,7 @@ clear_completed_button = tk.Button(
 clear_completed_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
+# Filter section for showing all, active, or completed tasks
 filter_frame = tk.Frame(content, bg="#ffd9e8")
 filter_frame.pack(pady=(8, 16))
 
@@ -906,15 +923,18 @@ completed_button = tk.Button(
 completed_button.pack(side="left", padx=6)
 
 
+# Main area for the scrollable task list
 main_list_frame = tk.Frame(content, bg="#ffd9e8")
 main_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
 
+# Canvas + scrollbar setup makes the task list scrollable
 canvas = tk.Canvas(main_list_frame, bg="#ffd9e8", highlightthickness=0)
 scrollbar = tk.Scrollbar(main_list_frame, orient="vertical", command=canvas.yview)
 tasks_frame = tk.Frame(canvas, bg="#ffd9e8")
 
 
+# Update the scroll area whenever the task frame changes size
 tasks_frame.bind(
     "<Configure>",
     lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
@@ -925,12 +945,15 @@ tasks_frame.bind(
 def _on_mousewheel_windows(event):
     canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+# Scroll up on Linux
 def _on_mousewheel_linux_up(event):
     canvas.yview_scroll(-1, "units")
 
+# Scroll down on Linux
 def _on_mousewheel_linux_down(event):
     canvas.yview_scroll(1, "units")
 
+# Add mouse wheel scrolling to a widget and all its child widgets
 def bind_mousewheel(widget):
     widget.bind("<MouseWheel>", _on_mousewheel_windows)
     widget.bind("<Button-4>", _on_mousewheel_linux_up)
@@ -939,20 +962,22 @@ def bind_mousewheel(widget):
     for child in widget.winfo_children():
         bind_mousewheel(child)
 
+
+# Put the task frame inside the canvas and connect scrollbar
 canvas.create_window((0, 0), window=tasks_frame, anchor="nw")
 canvas.configure(yscrollcommand=scrollbar.set)
 
 canvas.pack(side="left", fill="both", expand=True)
 scrollbar.pack(side="right", fill="y")
 
+# Start with placeholder text and refresh the whole GUI
 set_placeholder()
 refresh_all()
 
-
+# Enable scrolling in the task area
 bind_mousewheel(canvas)
 bind_mousewheel(tasks_frame)
 bind_mousewheel(main_list_frame)
 
-
-
+# Start the Tkinter event loop
 root.mainloop()
