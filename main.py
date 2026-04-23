@@ -2,7 +2,8 @@ import json
 import os
 from datetime import datetime
 
-FILE_NAME = "tasks.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILE_NAME = os.path.join(BASE_DIR, "tasks.json")
 
 def safe_input(prompt):
     try:
@@ -48,7 +49,7 @@ def get_valid_number(prompt):
 def load_tasks():
     if os.path.exists(FILE_NAME):
         try:
-            with open(FILE_NAME, "r") as file:
+            with open(FILE_NAME, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 if isinstance(data, list):
                     return data
@@ -67,7 +68,7 @@ tasks = load_tasks()
 #save tasks to json file
 def save_tasks():
     try:
-        with open(FILE_NAME, "w") as file:
+        with open(FILE_NAME, "w", encoding="utf-8") as file:
             json.dump(tasks, file, indent=4)
     except OSError as error:
         print(f"Error saving file: {error}")
