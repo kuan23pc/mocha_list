@@ -12,3 +12,6 @@ __pycache__/
 
 #Coverage
 .coverage
+
+# Local data files
+tasks.json
