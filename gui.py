@@ -12,124 +12,123 @@ current_list_index = 0
 
 # Color themes for the GUI
 # Current selected theme
-current_theme = "Cloud White"
+current_theme = "Calm Breeze"
 
 # Color themes for the GUI
 THEMES = {
-
-"Cloud White": {
-    "bg": "#FFFFFF",
-    "sidebar": "#FFFFFF",
+"Calm Breeze": {
+    "bg": "#FFFCF8",
+    "sidebar": "#EFD8CF",
     "row": "#FFFFFF",
-    "button": "#FFFFFF",
-    "button_active": "#F5F5F5",
-    "selected": "#F0F0F0",
-    "accent": "#222222",
-    "accent_dark": "#000000",
-    "text": "#222222",
-    "muted": "#777777",
-    "placeholder": "#999999",
-    "success": "#222222",
-    "danger": "#9B4A4A",
-    "flash": "#FFF4B8",
+    "button": "#E9D2C8",
+    "button_active": "#DDBFB3",
+    "selected": "#D8B8B2",
+    "accent": "#A66F65",
+    "accent_dark": "#6B4842",
+    "text": "#2E2926",
+    "muted": "#7D6E68",
+    "placeholder": "#9A867F",
+    "success": "#8DA383",
+    "danger": "#A45F5F",
+    "flash": "#FFF1B8",
     "entry_bg": "#FFFFFF",
-    "progress_trough": "#F5F5F5"
+    "progress_trough": "#F4E5DE"
 },
 
-"Neutral Beige": {
-    "bg": "#FAF7F0",
-    "sidebar": "#EDE4D8",
-    "row": "#FFFDF8",
-    "button": "#D8C8B8",
-    "button_active": "#C8B6A6",
-    "selected": "#CDBBA7",
-    "accent": "#6B5E50",
-    "accent_dark": "#4A4037",
-    "text": "#2E2A25",
-    "muted": "#7A6F64",
-    "placeholder": "#8A7C70",
-    "success": "#4F7A5A",
-    "danger": "#9B4A4A",
-    "flash": "#FFF3B0",
+    "Cotton Candy": {
+    "bg": "#FFF9FC",
+    "sidebar": "#FFE4F0",
+    "row": "#FFFFFF",
+    "button": "#FFC4DD",
+    "button_active": "#FFADCF",
+    "selected": "#FFB8D6",
+    "accent": "#E86FA8",
+    "accent_dark": "#B94D7E",
+    "text": "#2F2429",
+    "muted": "#7A626B",
+    "placeholder": "#A07988",
+    "success": "#7FA86B",
+    "danger": "#C94F72",
+    "flash": "#FFADCF",
     "entry_bg": "#FFFFFF",
-    "progress_trough": "#EFE7DC"
+    "progress_trough": "#FFEAF4"
 },
 
-    "Soft Pink": {
-        "bg": "#FFF1F5",
-        "sidebar": "#FCE7F3",
-        "row": "#FFF8FB",
-        "button": "#F9CADA",
-        "button_active": "#F3B6CB",
-        "selected": "#F3B6CB",
-        "accent": "#9D5C72",
-        "accent_dark": "#754153",
-        "text": "#2F2428",
-        "muted": "#7A626B",
-        "placeholder": "#9B6E80",
-        "success": "#4F7A5A",
-        "danger": "#9B4A4A",
-        "flash": "#FFF3B0",
-        "entry_bg": "#FFFFFF",
-        "progress_trough": "#FCE7F3"
-    },
+    "Ocean Dream": {
+    "bg": "#F4FBFD",
+    "sidebar": "#B8E2F2",
+    "row": "#FFFFFF",
+    "button": "#A6D8EE",
+    "button_active": "#8FCDE8",
+    "selected": "#D0EFF9",
+    "accent": "#72C5E8",
+    "accent_dark": "#4A9FC4",
+    "text": "#223036",
+    "muted": "#667980",
+    "placeholder": "#7D929A",
+    "success": "#6FA878",
+    "danger": "#A95F5F",
+    "flash": "#A8D6FF",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#D0EFF9"
+},
 
-    "Soft Blue": {
-        "bg": "#EFF6FF",
-        "sidebar": "#DBEAFE",
-        "row": "#F8FBFF",
-        "button": "#BFDBFE",
-        "button_active": "#93C5FD",
-        "selected": "#AFCDF7",
-        "accent": "#3B6EA8",
-        "accent_dark": "#264E7A",
-        "text": "#1F2937",
-        "muted": "#64748B",
-        "placeholder": "#6B8BAF",
-        "success": "#4F7A5A",
-        "danger": "#9B4A4A",
-        "flash": "#FFF3B0",
-        "entry_bg": "#FFFFFF",
-        "progress_trough": "#DBEAFE"
-    },
+   "Matcha Cream": {
+    "bg": "#FBFFF6",
+    "sidebar": "#EAF4D8",
+    "row": "#FFFFFF",
+    "button": "#DDEDC2",
+    "button_active": "#D0E3AD",
+    "selected": "#C2D99B",
+    "accent": "#8DAA5F",
+    "accent_dark": "#657D3F",
+    "text": "#2B3022",
+    "muted": "#747D63",
+    "placeholder": "#909B78",
+    "success": "#7FA65A",
+    "danger": "#A86A6A",
+    "flash": "#FFF1A8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#EEF6DE"
+},
 
-    "Sage Green": {
-        "bg": "#F5FAF4",
-        "sidebar": "#E7F0E3",
-        "row": "#FCFEFB",
-        "button": "#D6E5D0",
-        "button_active": "#C4D8BE",
-        "selected": "#CBDDC5",
-        "accent": "#6F8F66",
-        "accent_dark": "#4F6B48",
-        "text": "#253022",
-        "muted": "#6E7F68",
-        "placeholder": "#82957B",
-        "success": "#5B8155",
-        "danger": "#9B4A4A",
-        "flash": "#FFF3B0",
-        "entry_bg": "#FFFFFF",
-        "progress_trough": "#E7F0E3"
-    },
+"Cherry Pie": {
+    "bg": "#FFF5F5",
+    "sidebar": "#DFA3AA",
+    "row": "#FFFFFF",
+    "button": "#D45D6C",
+    "button_active": "#C94F5F",
+    "selected": "#8F1D32",
+    "accent": "#A1122B",
+    "accent_dark": "#8F1D32",
+    "text": "#2F1D20",
+    "muted": "#7D5B60",
+    "placeholder": "#9A747A",
+    "success": "#7F9A68",
+    "danger": "#B1122D",
+    "flash": "#C94F5F",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#F0CDD2"
+},
 
     "Lavender Bloom": {
-        "bg": "#F5F3FF",
-        "sidebar": "#EDE9FE",
-        "row": "#FBFAFF",
-        "button": "#DDD6FE",
-        "button_active": "#C4B5FD",
-        "selected": "#CFC3F7",
-        "accent": "#6D5A9C",
-        "accent_dark": "#4C3F73",
-        "text": "#262238",
-        "muted": "#756B8C",
-        "placeholder": "#8578A3",
-        "success": "#4F7A5A",
-        "danger": "#9B4A4A",
-        "flash": "#FFF3B0",
-        "entry_bg": "#FFFFFF",
-        "progress_trough": "#EDE9FE"
-    },
+    "bg": "#FBF7FF",
+    "sidebar": "#E3CFF2",
+    "row": "#FFFFFF",
+    "button": "#D5B4EF",
+    "button_active": "#C79BE8",
+    "selected": "#B982E0",
+    "accent": "#9C5FD1",
+    "accent_dark": "#6F3FA0",
+    "text": "#2D2433",
+    "muted": "#74647D",
+    "placeholder": "#8B7998",
+    "success": "#7FA06B",
+    "danger": "#B85C75",
+    "flash": "#FFF1A8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#EADAF6"
+},
 
 "Summer Pop": {
     "bg": "#FFFCEB",
@@ -150,64 +149,28 @@ THEMES = {
     "progress_trough": "#D8F6F8"
 },
 
-"Mint Lemonade": {
-    "bg": "#FDFFF2",
-    "sidebar": "#E8F8C8",
+
+"Blank Canvas": {
+    "bg": "#FFFFFF",
+    "sidebar": "#FFFFFF",
     "row": "#FFFFFF",
-    "button": "#CFF3D2",
-    "button_active": "#B7E8BB",
-    "selected": "#F6E27F",
-    "accent": "#5FA96B",
-    "accent_dark": "#3F7A49",
-    "text": "#273024",
-    "muted": "#6F7A62",
-    "placeholder": "#87916F",
-    "success": "#5FA96B",
-    "danger": "#C96A6A",
-    "flash": "#FFF17A",
+    "button": "#FFFFFF",
+    "button_active": "#F5F5F5",
+    "selected": "#F0F0F0",
+    "accent": "#222222",
+    "accent_dark": "#000000",
+    "text": "#222222",
+    "muted": "#777777",
+    "placeholder": "#999999",
+    "success": "#222222",
+    "danger": "#9B4A4A",
+    "flash": "#FFF4B8",
     "entry_bg": "#FFFFFF",
-    "progress_trough": "#EEF8D7"
+    "progress_trough": "#F5F5F5"
 },
 
-"Sunset Peach": {
-    "bg": "#FFF7EF",
-    "sidebar": "#FFE0C2",
-    "row": "#FFFFFF",
-    "button": "#FFC9B5",
-    "button_active": "#FFB39A",
-    "selected": "#F7A6A6",
-    "accent": "#D96B4C",
-    "accent_dark": "#9E4933",
-    "text": "#302720",
-    "muted": "#7A675B",
-    "placeholder": "#967D6C",
-    "success": "#6BAA75",
-    "danger": "#B94F4F",
-    "flash": "#FFE680",
-    "entry_bg": "#FFFFFF",
-    "progress_trough": "#FFE6D1"
-},
 
-"Orange Cream": {
-    "bg": "#FFF8EF",
-    "sidebar": "#FFE2B8",
-    "row": "#FFFFFF",
-    "button": "#FFB86B",
-    "button_active": "#FFA94D",
-    "selected": "#FFD29A",
-    "accent": "#E8751A",
-    "accent_dark": "#A94F0F",
-    "text": "#30261D",
-    "muted": "#7A6758",
-    "placeholder": "#957A63",
-    "success": "#6BAA75",
-    "danger": "#B94F4F",
-    "flash": "#FFE066",
-    "entry_bg": "#FFFFFF",
-    "progress_trough": "#FFEAD2"
-},
-
-    "Calm Dark": {
+    "Midnight Calm": {
         "bg": "#111827",
         "sidebar": "#1F2937",
         "row": "#273449",
@@ -318,8 +281,19 @@ def handle_placeholder_typing(event):
 def flash_add_button():
     original_bg = add_button.cget("bg")
     original_active_bg = add_button.cget("activebackground")
-    add_button.config(bg=C("flash"), activebackground=C("flash"))
-    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg)) # restore original colors after short delay
+
+    add_button.config(
+        bg=C("button_active"),
+        activebackground=C("button_active")
+    )
+
+    root.after(
+        180,
+        lambda: add_button.config(
+            bg=original_bg,
+            activebackground=original_active_bg
+        )
+    )
 
 # Validates deadline input (format and future date)
 def validate_deadline(deadline_text):
@@ -425,21 +399,24 @@ def set_filter(filter_name):
 # Updates filter button styles vased on selected filter
 def update_filter_buttons():
     all_button.config(
-        bg=C("selected") if current_filter == "all" else C("button"),
+        bg=C("button"),
         fg=C("text"),
-        activebackground=C("button_active")
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "all" else "raised"
     )
 
     active_button.config(
-        bg=C("selected") if current_filter == "active" else C("button"),
+        bg=C("button"),
         fg=C("text"),
-        activebackground=C("button_active")
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "active" else "raised"
     )
 
     completed_button.config(
-        bg=C("selected") if current_filter == "completed" else C("button"),
+        bg=C("button"),
         fg=C("text"),
-        activebackground=C("button_active")
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "completed" else "raised"
     )
 
 # Each item includes the original index and the task itself. 
@@ -746,9 +723,8 @@ def refresh_sidebar():
 
     # Creates buttons for each list
     for index, task_list in enumerate(tasks):
-        bg_color = C("selected") if index == current_list_index else C("button")
-
-        list_button = tk.Button(
+        bg_color = C("button")
+        list_button = tk.Button (
             sidebar_lists_frame,
             text=task_list["title"],
             command=lambda i=index: select_list(i),
@@ -757,7 +733,9 @@ def refresh_sidebar():
             activebackground=C("button_active"),
             font=("Times New Roman", 12),
             width=18,
-            anchor="w"
+            anchor="w",
+            relief="sunken" if index == current_list_index else "raised"
+
         )
         list_button.pack(fill="x", padx=8, pady=4)
         
