@@ -1,0 +1,67 @@
+import unittest
+from unittest.mock import patch
+import main
+
+
+class TestInputValidation(unittest.TestCase):
+
+    def setUp(self):
+        # Reset task list before each test
+        main.tasks.clear()
+
+    # Test that the main loop exits immediately when choosing option 6
+    def test_main_exit(self):
+        with patch("builtins.input", side_effect=["6"]):
+            main.main()
+
+    # Test invalid menu input followed by a valid exit command
+    def test_main_invalid_then_exit(self):
+        with patch("builtins.input", side_effect=["99", "6"]):
+            main.main()
+
+    # Test safe_input handling of KeyboardInterrupt (e.g., Ctrl+C)
+    def test_safe_input_interrupt(self):
+        with patch("builtins.input", side_effect=KeyboardInterrupt):
+            result = main.safe_input("Test")
+
+        self.assertIsNone(result)
+
+    # Test deleting a task when input is none
+    def test_delete_none_input(self):
+        main.tasks.append({"title": "Test", "completed": False, "deadline": None})
+
+        with patch("main.safe_input", return_value=None):
+            main.delete_tasks()
+
+        self.assertEqual(len(main.tasks), 1)
+
+    # Test deleting a task with empty input
+    def test_delete_empty_input(self):
+        main.tasks.append({"title": "Test", "completed": False, "deadline": None})
+
+        with patch("main.safe_input", return_value=""):
+            main.delete_tasks()
+
+        self.assertEqual(len(main.tasks), 1)
+
+    # Test deleting a task with a negative index 
+    def test_delete_negative_index(self):
+        main.tasks.append({"title": "Test", "completed": False, "deadline": None})
+
+        with patch("main.safe_input", return_value="-1"):
+            main.delete_tasks()
+
+        self.assertEqual(len(main.tasks), 1)
+
+    # Test setting a deadline in the past 
+    def test_deadline_in_past(self):
+        main.tasks.append({"title": "Test", "completed": False, "deadline": None})
+
+        with patch("main.safe_input", side_effect=["1", "2000-01-01"]):
+            main.set_deadline()
+
+        self.assertIsNone(main.tasks[0]["deadline"])
+
+
+if __name__ == "__main__":
+    unittest.main()

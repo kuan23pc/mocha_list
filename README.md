@@ -1,10 +1,10 @@
-# Mocha List
+# CALM List
 
 [![CI](https://github.com/kuan23pc/group_project/actions/workflows/ci.yml/badge.svg)](https://github.com/kuan23pc/group_project/actions)
  
 
 ## Project description 
-Mocha List is a task management system that allows users to create, organize, and track tasks. The system is designed to help users manage their daily activities and improve productivity. 
+CALM List is a task management system that allows users to create, organize, and track tasks. The system is designed to help users manage their daily activities and improve productivity. 
 
 The application supports deadlines and provides a structured way to manage tasks.
 
@@ -76,7 +76,7 @@ To run the program, follow these steps:
 3. Navigate to the project folder by writing: 
      
      ```bash
-     cd mocha_list
+     cd CALM_List
      ```
 4. Run the program by writing: 
      
