@@ -10,7 +10,193 @@ from main import tasks, save_tasks
 current_filter = "all"
 current_list_index = 0
 
-# Data helper func.:
+# Color themes for the GUI
+# Current selected theme
+current_theme = "Calm Breeze"
+
+# Color themes for the GUI
+THEMES = {
+"Calm Breeze": {
+    "bg": "#FFFCF8",
+    "sidebar": "#EFD8CF",
+    "row": "#FFFFFF",
+    "button": "#E9D2C8",
+    "button_active": "#DDBFB3",
+    "selected": "#D8B8B2",
+    "accent": "#A66F65",
+    "accent_dark": "#6B4842",
+    "text": "#2E2926",
+    "muted": "#7D6E68",
+    "placeholder": "#9A867F",
+    "success": "#8DA383",
+    "danger": "#A45F5F",
+    "flash": "#FFF1B8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#F4E5DE"
+},
+
+    "Cotton Candy": {
+    "bg": "#FFF9FC",
+    "sidebar": "#FFE4F0",
+    "row": "#FFFFFF",
+    "button": "#FFC4DD",
+    "button_active": "#FFADCF",
+    "selected": "#FFB8D6",
+    "accent": "#E86FA8",
+    "accent_dark": "#B94D7E",
+    "text": "#2F2429",
+    "muted": "#7A626B",
+    "placeholder": "#A07988",
+    "success": "#7FA86B",
+    "danger": "#C94F72",
+    "flash": "#FFADCF",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#FFEAF4"
+},
+
+    "Ocean Dream": {
+    "bg": "#F4FBFD",
+    "sidebar": "#B8E2F2",
+    "row": "#FFFFFF",
+    "button": "#A6D8EE",
+    "button_active": "#8FCDE8",
+    "selected": "#D0EFF9",
+    "accent": "#72C5E8",
+    "accent_dark": "#4A9FC4",
+    "text": "#223036",
+    "muted": "#667980",
+    "placeholder": "#7D929A",
+    "success": "#6FA878",
+    "danger": "#A95F5F",
+    "flash": "#A8D6FF",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#D0EFF9"
+},
+
+   "Matcha Cream": {
+    "bg": "#FBFFF6",
+    "sidebar": "#EAF4D8",
+    "row": "#FFFFFF",
+    "button": "#DDEDC2",
+    "button_active": "#D0E3AD",
+    "selected": "#C2D99B",
+    "accent": "#8DAA5F",
+    "accent_dark": "#657D3F",
+    "text": "#2B3022",
+    "muted": "#747D63",
+    "placeholder": "#909B78",
+    "success": "#7FA65A",
+    "danger": "#A86A6A",
+    "flash": "#FFF1A8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#EEF6DE"
+},
+
+"Cherry Pie": {
+    "bg": "#FFF5F5",
+    "sidebar": "#DFA3AA",
+    "row": "#FFFFFF",
+    "button": "#D45D6C",
+    "button_active": "#C94F5F",
+    "selected": "#8F1D32",
+    "accent": "#A1122B",
+    "accent_dark": "#8F1D32",
+    "text": "#2F1D20",
+    "muted": "#7D5B60",
+    "placeholder": "#9A747A",
+    "success": "#7F9A68",
+    "danger": "#B1122D",
+    "flash": "#C94F5F",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#F0CDD2"
+},
+
+    "Lavender Bloom": {
+    "bg": "#FBF7FF",
+    "sidebar": "#E3CFF2",
+    "row": "#FFFFFF",
+    "button": "#D5B4EF",
+    "button_active": "#C79BE8",
+    "selected": "#B982E0",
+    "accent": "#9C5FD1",
+    "accent_dark": "#6F3FA0",
+    "text": "#2D2433",
+    "muted": "#74647D",
+    "placeholder": "#8B7998",
+    "success": "#7FA06B",
+    "danger": "#B85C75",
+    "flash": "#FFF1A8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#EADAF6"
+},
+
+"Summer Pop": {
+    "bg": "#FFFCEB",
+    "sidebar": "#BDEFF2",
+    "row": "#FFFFFF",
+    "button": "#FFB3D1",
+    "button_active": "#FF8FBE",
+    "selected": "#F47CB4",
+    "accent": "#69A957",
+    "accent_dark": "#176A94",
+    "text": "#2F2A24",
+    "muted": "#6F7C78",
+    "placeholder": "#7A8C88",
+    "success": "#69A957",
+    "danger": "#D94F7E",
+    "flash": "#FED439",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#D8F6F8"
+},
+
+
+"Blank Canvas": {
+    "bg": "#FFFFFF",
+    "sidebar": "#FFFFFF",
+    "row": "#FFFFFF",
+    "button": "#FFFFFF",
+    "button_active": "#F5F5F5",
+    "selected": "#F0F0F0",
+    "accent": "#222222",
+    "accent_dark": "#000000",
+    "text": "#222222",
+    "muted": "#777777",
+    "placeholder": "#999999",
+    "success": "#222222",
+    "danger": "#9B4A4A",
+    "flash": "#FFF4B8",
+    "entry_bg": "#FFFFFF",
+    "progress_trough": "#F5F5F5"
+},
+
+
+    "Midnight Calm": {
+        "bg": "#111827",
+        "sidebar": "#1F2937",
+        "row": "#273449",
+        "button": "#374151",
+        "button_active": "#4B5563",
+        "selected": "#475569",
+        "accent": "#A7C7E7",
+        "accent_dark": "#DDEAFE",
+        "text": "#F9FAFB",
+        "muted": "#CBD5E1",
+        "placeholder": "#94A3B8",
+        "success": "#86EFAC",
+        "danger": "#FCA5A5",
+        "flash": "#586A85",
+        "entry_bg": "#0F172A",
+        "progress_trough": "#1F2937"
+    }
+
+}
+
+
+
+def C(color_name):
+    return THEMES[current_theme][color_name]
+
+#Data helper func.:
 
 #Ensures that task data follows the expected structure
 def normalize_data():
@@ -65,20 +251,19 @@ def get_current_list_title():
 
 # Placeholder config. for input field
 PLACEHOLDER_TEXT = "Add a new task..."
-PLACEHOLDER_COLOR = "#d87093"
 NORMAL_ENTRY_COLOR = "black"
 
 # Insert placeholder text if input field is empty
 def set_placeholder():
     if entry.get() == "":
         entry.insert(0, PLACEHOLDER_TEXT)
-        entry.config(fg=PLACEHOLDER_COLOR)
+        entry.config(fg=C("placeholder"))
 
 # Clears placeholder text when user starts typing
 def clear_placeholder(event=None):
-    if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
+    if entry.cget("fg") == C("placeholder") and entry.get() == PLACEHOLDER_TEXT:
         entry.delete(0, tk.END) # Remove placeholder text
-        entry.config(fg=NORMAL_ENTRY_COLOR) # restore normal text color
+        entry.config(fg=C("text")) # restore normal text color
 
 # restores placeholder if input field is left empty
 def restore_placeholder(event=None):
@@ -88,17 +273,27 @@ def restore_placeholder(event=None):
 
 # Ensures placeholder disapperas correctly when typing begins
 def handle_placeholder_typing(event):
-    if entry.cget("fg") == PLACEHOLDER_COLOR and entry.get() == PLACEHOLDER_TEXT:
+    if entry.cget("fg") == C("placeholder") and entry.get() == PLACEHOLDER_TEXT:
         entry.delete(0, tk.END) # remove placeholder text
-        entry.config(fg=NORMAL_ENTRY_COLOR) # switch to normal text color
-
+        entry.config(fg=C("text")) # restore normal text color
 
 # Light effect for add task button to give visual feedback
 def flash_add_button():
     original_bg = add_button.cget("bg")
     original_active_bg = add_button.cget("activebackground")
-    add_button.config(bg="#fff4a3", activebackground="#fff4a3") # change color to highlight button
-    root.after(180, lambda: add_button.config(bg=original_bg, activebackground=original_active_bg)) # restore original colors after short delay
+
+    add_button.config(
+        bg=C("button_active"),
+        activebackground=C("button_active")
+    )
+
+    root.after(
+        180,
+        lambda: add_button.config(
+            bg=original_bg,
+            activebackground=original_active_bg
+        )
+    )
 
 # Validates deadline input (format and future date)
 def validate_deadline(deadline_text):
@@ -176,17 +371,17 @@ def delete_current_list():
         return
 
     title = tasks[current_list_index]["title"]
-    #Ask user for confirmation
+
     confirm = messagebox.askyesno(
-     "Delete List", 
-     f"Are you sure you want to delete the list '{title}'?"
+        "Delete List",
+        f"Are you sure you want to delete the list '{title}'?"
     )
+
     if not confirm:
         return
 
     tasks.pop(current_list_index)
 
-    #Adjust index after deletion
     if len(tasks) == 0:
         current_list_index = -1
     elif current_list_index >= len(tasks):
@@ -194,7 +389,6 @@ def delete_current_list():
 
     save_tasks()
     refresh_all()
-
 
 # Filter functions, sets active filter (all/active/completed)
 def set_filter(filter_name):
@@ -204,12 +398,26 @@ def set_filter(filter_name):
 
 # Updates filter button styles vased on selected filter
 def update_filter_buttons():
-    active_bg = "#f4a6c1"
-    inactive_bg = "#ffb6c1"
+    all_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "all" else "raised"
+    )
 
-    all_button.config(bg=active_bg if current_filter == "all" else inactive_bg)
-    active_button.config(bg=active_bg if current_filter == "active" else inactive_bg)
-    completed_button.config(bg=active_bg if current_filter == "completed" else inactive_bg)
+    active_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "active" else "raised"
+    )
+
+    completed_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
+        relief="sunken" if current_filter == "completed" else "raised"
+    )
 
 # Each item includes the original index and the task itself. 
 def get_filtered_tasks():
@@ -232,19 +440,30 @@ def update_counter():
     total = len(current_tasks)
     completed = sum(1 for task in current_tasks if task["completed"])
     remaining = total - completed
-    
-    #Update text label with task counts
+
     counter_label.config(
-        text=f"Total: {total}    Completed: {completed}    Remaining: {remaining}"
+        text=f"Total: {total}    Completed: {completed}    Remaining: {remaining}",
+        bg=C("bg"),
+        fg=C("text")
     )
-    #Calculate completion %
+
     percent = 0 if total == 0 else round((completed / total) * 100)
-    progress_label.config(text=f"Progress: {percent}%")
+
+    progress_label.config(
+        text=f"Progress: {percent}%",
+        bg=C("bg"),
+        fg=C("text")
+    )
+
     progress_bar["value"] = percent
 
 # Updates the title of the currenly selected list
 def update_main_title():
-    list_title_label.config(text=get_current_list_title())
+    list_title_label.config(
+        text=get_current_list_title(),
+        bg=C("bg"),
+        fg=C("accent_dark")
+    )
 
 
 # Task functions, toggles task completion status when checkbar is clicked
@@ -300,39 +519,38 @@ def open_edit_window(index):
     current_tasks = get_current_tasks()
     task = current_tasks[index]
 
-    #Pop up window
     edit_window = tk.Toplevel(root)
     edit_window.title("Edit Task")
     edit_window.geometry("560x470")
-    edit_window.configure(bg="#ffd9e8")
+    edit_window.configure(bg=C("bg"))
     edit_window.grab_set()
     edit_window.resizable(False, False)
-    
-    # Task title
+
     title_label = tk.Label(
         edit_window,
         text="Task Name",
-        bg="#ffd9e8",
-        fg="black",
+        bg=C("bg"),
+        fg=C("text"),
         font=("Times New Roman", 14, "bold")
     )
     title_label.pack(anchor="w", padx=20, pady=(20, 5))
 
-
     title_entry = tk.Entry(
         edit_window,
         font=("Times New Roman", 13),
-        width=40
+        width=40,
+        bg=C("entry_bg"),
+        fg=C("text"),
+        insertbackground=C("text")
     )
     title_entry.pack(padx=20, fill="x")
     title_entry.insert(0, task["title"])
 
-    # Deadline
     deadline_label = tk.Label(
         edit_window,
         text="Deadline (YYYY-MM-DD)",
-        bg="#ffd9e8",
-        fg="black",
+        bg=C("bg"),
+        fg=C("text"),
         font=("Times New Roman", 14, "bold")
     )
     deadline_label.pack(anchor="w", padx=20, pady=(15, 5))
@@ -340,16 +558,19 @@ def open_edit_window(index):
     deadline_entry = tk.Entry(
         edit_window,
         font=("Times New Roman", 13),
-        width=40
+        width=40,
+        bg=C("entry_bg"),
+        fg=C("text"),
+        insertbackground=C("text")
     )
     deadline_entry.pack(padx=20, fill="x")
     deadline_entry.insert(0, task.get("deadline") or "")
 
-    description_label = tk.Label(   #Description
+    description_label = tk.Label(
         edit_window,
         text="Description",
-        bg="#ffd9e8",
-        fg="black",
+        bg=C("bg"),
+        fg=C("text"),
         font=("Times New Roman", 14, "bold")
     )
     description_label.pack(anchor="w", padx=20, pady=(15, 5))
@@ -358,28 +579,29 @@ def open_edit_window(index):
         edit_window,
         font=("Times New Roman", 13),
         height=7,
-        width=40
+        width=40,
+        bg=C("entry_bg"),
+        fg=C("text"),
+        insertbackground=C("text")
     )
     description_text.pack(padx=20, fill="both")
     description_text.insert("1.0", task.get("description", ""))
 
-    # Save edited values
     def save_edit():
         new_title = title_entry.get().strip()
         new_deadline = deadline_entry.get().strip()
         new_description = description_text.get("1.0", tk.END).strip()
 
-       #Validate title/deadline
         if new_title == "":
             messagebox.showerror("Invalid task", "Task name cannot be empty.", parent=edit_window)
             return
 
         is_valid, error_message = validate_deadline(new_deadline)
+
         if not is_valid:
             messagebox.showerror("Invalid date", error_message, parent=edit_window)
             return
 
-        #Update task data
         task["title"] = new_title
         task["deadline"] = new_deadline if new_deadline != "" else None
         task["description"] = new_description
@@ -388,36 +610,35 @@ def open_edit_window(index):
         edit_window.destroy()
         refresh_all()
 
-    # Button container
-    button_frame = tk.Frame(edit_window, bg="#ffd9e8")
+    button_frame = tk.Frame(edit_window, bg=C("bg"))
     button_frame.pack(pady=20)
 
-    # Button to save changes made in edit window
     save_button = tk.Button(
         button_frame,
         text="Save Changes",
         command=save_edit,
-        bg="#ffb6c1",
-        fg="black",
-        activebackground="#ff9eb5",
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
         font=("Times New Roman", 12),
         width=14
     )
     save_button.pack(side="left", padx=8)
-    
-    # Button to cancel editing and close window
+
     cancel_button = tk.Button(
         button_frame,
         text="Cancel",
         command=edit_window.destroy,
-        bg="#ffb6c1",
-        fg="black",
-        activebackground="#ff9eb5",
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
         font=("Times New Roman", 12),
         width=10
     )
     cancel_button.pack(side="left", padx=8)
 
+
+##############################
 # Sets/updates a deadline for a specific task via dialog input
 def set_deadline_gui(index):
     current_tasks = get_current_tasks()
@@ -440,21 +661,20 @@ def set_deadline_gui(index):
 
 # Adds a new task from GUI input field
 def add_task_gui():
-    # Ensures a list is selected
     if current_list_index == -1 or not tasks:
         messagebox.showerror("No List", "Create a list before adding a task.")
         return
-    
+
     raw_text = entry.get()
 
-    if entry.cget("fg") == PLACEHOLDER_COLOR and raw_text == PLACEHOLDER_TEXT:
+    if entry.cget("fg") == C("placeholder") and raw_text == PLACEHOLDER_TEXT:
         return
 
-    task_title = raw_text.strip() #Prevent empty task titles
+    task_title = raw_text.strip()
+
     if task_title == "":
         return
 
-    # Add new task to currect list
     current_tasks = get_current_tasks()
     current_tasks.append({
         "title": task_title,
@@ -462,7 +682,15 @@ def add_task_gui():
         "deadline": None,
         "description": ""
     })
+
     save_tasks()
+
+    entry.delete(0, tk.END)
+    entry.config(fg=C("text"))
+    set_placeholder()
+
+    flash_add_button()
+    refresh_all()
 
     #reset input field and restore placeholder
     entry.delete(0, tk.END)
@@ -486,59 +714,57 @@ def refresh_sidebar():
         empty_label = tk.Label(
             sidebar_lists_frame,
             text="No lists yet",
-            bg="#f6bfd2",
-            fg="black",
+            bg=C("sidebar"),
+            fg=C("muted"),
             font=("Times New Roman", 12, "italic")
         )
         empty_label.pack(padx=8, pady=8, anchor="w")
         return
 
-    # creates buttons for each list
+    # Creates buttons for each list
     for index, task_list in enumerate(tasks):
-        bg_color = "#f4a6c1" if index == current_list_index else "#ffb6c1"
-
-
-        list_button = tk.Button(
+        bg_color = C("button")
+        list_button = tk.Button (
             sidebar_lists_frame,
             text=task_list["title"],
             command=lambda i=index: select_list(i),
             bg=bg_color,
-            fg="black",
-            activebackground="#ff9eb5",
+            fg=C("text"),
+            activebackground=C("button_active"),
             font=("Times New Roman", 12),
             width=18,
-            anchor="w"
+            anchor="w",
+            relief="sunken" if index == current_list_index else "raised"
+
         )
         list_button.pack(fill="x", padx=8, pady=4)
-
+        
 # Updates the task display area
 def refresh_tasks():
     for widget in tasks_frame.winfo_children():
         widget.destroy()
 
     filtered_tasks = get_filtered_tasks()
-    # Show message if no tasks/no matches
+
     if not filtered_tasks:
         current_tasks = get_current_tasks()
         empty_text = "Add your first task above!" if len(current_tasks) == 0 else "No tasks match this filter."
 
-
         empty_label = tk.Label(
             tasks_frame,
             text=empty_text,
-            bg="#ffd9e8",
-            fg="#c71565",
+            bg=C("bg"),
+            fg=C("accent"),
             font=("Times New Roman", 16, "italic"),
             pady=30
         )
         empty_label.pack()
 
     else:
-        # Create UI rows for each task
         for real_index, task in filtered_tasks:
             row = tk.Frame(
                 tasks_frame,
-                bg="#ffe4ee",
+                bg=C("row"),
                 bd=1,
                 relief="solid",
                 padx=12,
@@ -546,37 +772,34 @@ def refresh_tasks():
             )
             row.pack(fill="x", padx=20, pady=8)
 
-            left_frame = tk.Frame(row, bg="#ffe4ee")
+            left_frame = tk.Frame(row, bg=C("row"))
             left_frame.pack(side="left", fill="x", expand=True)
-            #track checkbox state
+
             completed_var = tk.IntVar(value=1 if task["completed"] else 0)
 
-            top_line = tk.Frame(left_frame, bg="#ffe4ee")
+            top_line = tk.Frame(left_frame, bg=C("row"))
             top_line.pack(fill="x", pady=(0, 4))
 
-            # Checkbox for completion toggle
-            # When clicked, it updates the task's "completed" field via toggle_task
             checkbox = tk.Checkbutton(
                 top_line,
                 variable=completed_var,
                 command=lambda i=real_index, v=completed_var: toggle_task(i, v),
-                bg="#ffe4ee",
-                activebackground="#ffe4ee",
-                selectcolor="white",
+                bg=C("row"),
+                activebackground=C("row"),
+                selectcolor=C("entry_bg"),
                 bd=0,
                 highlightthickness=0
             )
             checkbox.pack(side="left", padx=(0, 8))
 
-            # Visual status indicator if the task is completed/not
             status_symbol = "✔" if task["completed"] else "✗"
-            status_color = "green" if task["completed"] else "#c71565"
+            status_color = C("success") if task["completed"] else C("danger")
 
             status_label = tk.Label(
                 top_line,
                 text=status_symbol,
                 fg=status_color,
-                bg="#ffe4ee",
+                bg=C("row"),
                 font=("Times New Roman", 16, "bold"),
                 width=2
             )
@@ -587,34 +810,34 @@ def refresh_tasks():
             task_label = tk.Label(
                 top_line,
                 text=task["title"],
-                fg="black",
-                bg="#ffe4ee",
+                fg=C("text"),
+                bg=C("row"),
                 font=task_font,
                 anchor="w"
             )
             task_label.pack(side="left", fill="x", expand=True)
-            
-            # Show deadline if it exists
+
             deadline = task.get("deadline")
+
             if deadline:
                 deadline_label = tk.Label(
                     left_frame,
                     text=f"Deadline: {deadline}",
-                    fg="#8b0f4d",
-                    bg="#ffe4ee",
+                    fg=C("accent_dark"),
+                    bg=C("row"),
                     font=("Times New Roman", 11, "italic"),
                     anchor="w"
                 )
                 deadline_label.pack(fill="x", padx=(40, 0), pady=(2, 0))
- 
 
             description = task.get("description", "").strip()
+
             if description:
                 description_label = tk.Label(
                     left_frame,
                     text=f"Description: {description}",
-                    fg="black",
-                    bg="#ffe4ee",
+                    fg=C("text"),
+                    bg=C("row"),
                     font=("Times New Roman", 11),
                     anchor="w",
                     justify="left",
@@ -622,44 +845,40 @@ def refresh_tasks():
                 )
                 description_label.pack(fill="x", padx=(40, 0), pady=(2, 0))
 
-            # Action buttoms (edit, deadline, delete)
-            button_frame = tk.Frame(row, bg="#ffe4ee")
+            button_frame = tk.Frame(row, bg=C("row"))
             button_frame.pack(side="right", padx=(20, 0))
-
 
             edit_button = tk.Button(
                 button_frame,
                 text="Edit",
                 command=lambda i=real_index: open_edit_window(i),
-                bg="#ffb6c1",
-                fg="black",
-                activebackground="#ff9eb5",
+                bg=C("button"),
+                fg=C("text"),
+                activebackground=C("button_active"),
                 font=("Times New Roman", 10),
                 width=8
             )
             edit_button.grid(row=0, column=0, padx=4, pady=2)
 
-
             deadline_button = tk.Button(
                 button_frame,
                 text="Set Deadline",
                 command=lambda i=real_index: set_deadline_gui(i),
-                bg="#ffb6c1",
-                fg="black",
-                activebackground="#ff9eb5",
+                bg=C("button"),
+                fg=C("text"),
+                activebackground=C("button_active"),
                 font=("Times New Roman", 10),
                 width=12
             )
             deadline_button.grid(row=0, column=1, padx=4, pady=2)
 
-
             delete_button = tk.Button(
                 button_frame,
                 text="Delete",
                 command=lambda i=real_index: delete_task_gui(i),
-                bg="#ffb6c1",
-                fg="black",
-                activebackground="#ff9eb5",
+                bg=C("button"),
+                fg=C("text"),
+                activebackground=C("button_active"),
                 font=("Times New Roman", 10),
                 width=8
             )
@@ -672,6 +891,107 @@ def refresh_all():
     update_counter()
     update_filter_buttons()
     update_main_title()
+
+def change_theme(selected_theme):
+    global current_theme
+    current_theme = selected_theme
+    apply_theme()
+
+
+def apply_theme():
+    root.configure(bg=C("bg"))
+
+    style.configure(
+        "Theme.Horizontal.TProgressbar",
+        troughcolor=C("progress_trough"),
+        background=C("accent"),
+        bordercolor=C("progress_trough"),
+        lightcolor=C("accent"),
+        darkcolor=C("accent")
+    )
+
+    main_container.config(bg=C("bg"))
+
+    sidebar.config(bg=C("sidebar"))
+    sidebar_title.config(bg=C("sidebar"), fg=C("accent"))
+
+    new_list_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    rename_list_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    delete_list_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    theme_label.config(
+        bg=C("sidebar"),
+        fg=C("accent")
+    )
+
+    theme_menu.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active"),
+        highlightbackground=C("sidebar")
+    )
+
+    theme_menu["menu"].config(
+        bg=C("entry_bg"),
+        fg=C("text")
+    )
+
+    sidebar_lists_frame.config(bg=C("sidebar"))
+
+    content.config(bg=C("bg"))
+    title_label.config(bg=C("bg"), fg=C("accent"))
+    list_title_label.config(bg=C("bg"), fg=C("accent_dark"))
+    counter_label.config(bg=C("bg"), fg=C("text"))
+    progress_label.config(bg=C("bg"), fg=C("text"))
+
+    top_frame.config(bg=C("bg"))
+
+    if entry.get() == PLACEHOLDER_TEXT:
+        entry.config(
+            bg=C("entry_bg"),
+            fg=C("placeholder"),
+            insertbackground=C("text")
+        )
+    else:
+        entry.config(
+            bg=C("entry_bg"),
+            fg=C("text"),
+            insertbackground=C("text")
+        )
+
+    add_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    clear_completed_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    filter_frame.config(bg=C("bg"))
+
+    main_list_frame.config(bg=C("bg"))
+    canvas.config(bg=C("bg"))
+    tasks_frame.config(bg=C("bg"))
+
+    refresh_all()
 
 
 # GUI setup
@@ -696,31 +1016,33 @@ except Exception:
 # Main window settings
 root.title("CALM List")
 root.geometry("1220x760")
-root.configure(bg="#ffd9e8")
+root.configure(bg=C("bg"))
+
 
 # Progress bar style
 style = ttk.Style()
 style.theme_use("default")
 style.configure(
-    "Pink.Horizontal.TProgressbar",
-    troughcolor="#ffe4ee",
-    background="#c71565",
-    bordercolor="#ffe4ee",
-    lightcolor="#c71565",
-    darkcolor="#c71565"
+    "Theme.Horizontal.TProgressbar",
+    troughcolor=C("progress_trough"),
+    background=C("accent"),
+    bordercolor=C("progress_trough"),
+    lightcolor=C("accent"),
+    darkcolor=C("accent")
 )
+
 
 # Fonts for normal and completed tasks
 normal_font = tkfont.Font(family="Times New Roman", size=15)
 completed_font = tkfont.Font(family="Times New Roman", size=15, overstrike=1)
 
 # Main container holds sidebar and main content area
-main_container = tk.Frame(root, bg="#ffd9e8")
+main_container = tk.Frame(root, bg=C("bg"))
 main_container.pack(fill="both", expand=True)
 
 
 # Sidebar
-sidebar = tk.Frame(main_container, bg="#f6bfd2", width=250)
+sidebar = tk.Frame(main_container, bg=C("sidebar"), width=250)
 sidebar.pack(side="left", fill="y")
 sidebar.pack_propagate(False)
 
@@ -728,8 +1050,8 @@ sidebar.pack_propagate(False)
 sidebar_title = tk.Label(
     sidebar,
     text="Lists",
-    bg="#f6bfd2",
-    fg="#c71565",
+    bg=C("sidebar"),
+    fg=C("accent"),
     font=("Times New Roman", 22, "bold italic")
 )
 sidebar_title.pack(pady=(20, 10))
@@ -740,9 +1062,9 @@ new_list_button = tk.Button(
     sidebar,
     text="New List",
     command=create_new_list,
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 12),
     width=18
 )
@@ -753,9 +1075,9 @@ rename_list_button = tk.Button(
     sidebar,
     text="Rename List",
     command=rename_current_list,
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 12),
     width=18
 )
@@ -766,28 +1088,61 @@ delete_list_button = tk.Button(
     sidebar,
     text="Delete List",
     command=delete_current_list,
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 12),
     width=18
 )
+
 delete_list_button.pack(pady=(5, 15))
+
+# Theme selector
+theme_label = tk.Label(
+    sidebar,
+    text="Theme",
+    bg=C("sidebar"),
+    fg=C("accent"),
+    font=("Times New Roman", 12, "bold")
+)
+theme_label.pack(pady=(5, 2))
+
+theme_var = tk.StringVar(value=current_theme)
+
+theme_menu = tk.OptionMenu(
+    sidebar,
+    theme_var,
+    *THEMES.keys(),
+    command=change_theme
+)
+theme_menu.config(
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
+    font=("Times New Roman", 11),
+    width=16,
+    highlightthickness=0
+)
+theme_menu["menu"].config(
+    bg=C("entry_bg"),
+    fg=C("text")
+)
+theme_menu.pack(pady=(0, 15))
 
 
 # Frame where the available lists will be displayed
-sidebar_lists_frame = tk.Frame(sidebar, bg="#f6bfd2")
+sidebar_lists_frame = tk.Frame(sidebar, bg=C("sidebar"))
 sidebar_lists_frame.pack(fill="both", expand=True, padx=8, pady=8)
 
 # Main content area where tasks and controls are shown
-content = tk.Frame(main_container, bg="#ffd9e8")
+content = tk.Frame(main_container, bg=C("bg"))
 content.pack(side="left", fill="both", expand=True)
 
 title_label = tk.Label(
     content,
-    text="CALM List",
-    bg="#ffd9e8",
-    fg="#c71565",
+    text="Mocha List",
+    bg=C("bg"),
+    fg=C("accent"),
     font=("Times New Roman", 30, "bold italic")
 )
 title_label.pack(pady=(20, 8))
@@ -796,8 +1151,8 @@ title_label.pack(pady=(20, 8))
 list_title_label = tk.Label(
     content,
     text="",
-    bg="#ffd9e8",
-    fg="#8b0f4d",
+    bg=C("bg"),
+    fg=C("accent_dark"),
     font=("Times New Roman", 22, "bold")
 )
 list_title_label.pack(pady=(0, 8))
@@ -806,8 +1161,8 @@ list_title_label.pack(pady=(0, 8))
 counter_label = tk.Label(
     content,
     text="",
-    bg="#ffd9e8",
-    fg="black",
+    bg=C("bg"),
+    fg=C("text"),
     font=("Times New Roman", 15, "bold")
 )
 counter_label.pack(pady=(0, 10))
@@ -816,8 +1171,8 @@ counter_label.pack(pady=(0, 10))
 progress_label = tk.Label(
     content,
     text="Progress: 0%",
-    bg="#ffd9e8",
-    fg="black",
+    bg=C("bg"),
+    fg=C("text"),
     font=("Times New Roman", 13, "bold")
 )
 progress_label.pack(pady=(0, 6))
@@ -826,7 +1181,7 @@ progress_label.pack(pady=(0, 6))
 # Progress bar for completed tasks
 progress_bar = ttk.Progressbar(
     content,
-    style="Pink.Horizontal.TProgressbar",
+    style="Theme.Horizontal.TProgressbar",
     orient="horizontal",
     length=320,
     mode="determinate"
@@ -834,7 +1189,7 @@ progress_bar = ttk.Progressbar(
 progress_bar.pack(pady=(0, 16))
 
 # Top frame contains task input and action buttons
-top_frame = tk.Frame(content, bg="#ffd9e8")
+top_frame = tk.Frame(content, bg=C("bg"))
 top_frame.pack(pady=10)
 
 # Entry box for typing a new task
@@ -844,7 +1199,9 @@ entry = tk.Entry(
     font=("Times New Roman", 15),
     bd=2,
     relief="solid",
-    fg=NORMAL_ENTRY_COLOR
+    bg=C("entry_bg"),
+    fg=C("text"),
+    insertbackground=C("text")
 )
 entry.pack(side="left", padx=8, ipady=6)
 entry.bind("<Return>", add_task_with_enter)  # Add task when Enter is pressed
@@ -858,9 +1215,9 @@ add_button = tk.Button(
     top_frame,
     text="Add Task",
     command=add_task_gui,
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 12),
     width=12
 )
@@ -872,9 +1229,9 @@ clear_completed_button = tk.Button(
     top_frame,
     text="Clear Completed",
     command=clear_completed_gui,
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 12),
     width=15
 )
@@ -882,7 +1239,7 @@ clear_completed_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
 # Filter section for showing all, active, or completed tasks
-filter_frame = tk.Frame(content, bg="#ffd9e8")
+filter_frame = tk.Frame(content, bg=C("bg"))
 filter_frame.pack(pady=(8, 16))
 
 
@@ -890,9 +1247,9 @@ all_button = tk.Button(
     filter_frame,
     text="All",
     command=lambda: set_filter("all"),
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 11),
     width=10
 )
@@ -903,9 +1260,9 @@ active_button = tk.Button(
     filter_frame,
     text="Active",
     command=lambda: set_filter("active"),
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 11),
     width=10
 )
@@ -916,9 +1273,9 @@ completed_button = tk.Button(
     filter_frame,
     text="Completed",
     command=lambda: set_filter("completed"),
-    bg="#ffb6c1",
-    fg="black",
-    activebackground="#ff9eb5",
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
     font=("Times New Roman", 11),
     width=10
 )
@@ -926,7 +1283,7 @@ completed_button.pack(side="left", padx=6)
 
 
 # Main area for the scrollable task list
-main_list_frame = tk.Frame(content, bg="#ffd9e8")
+main_list_frame = tk.Frame(content, bg=C("bg"))
 main_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
 # New container for canvas + scrollbars
@@ -934,13 +1291,9 @@ scroll_frame = tk.Frame(main_list_frame, bg="#ffd9e8")
 scroll_frame.pack(fill="both", expand=True)
 
 # Canvas + scrollbar setup makes the task list scrollable
-canvas = tk.Canvas(scroll_frame, bg="#ffd9e8", highlightthickness=0)
-
-# Vertical Scrollbar
-vertical_scrollbar = tk.Scrollbar(
-    scroll_frame,
-    orient = "vertical",
-)
+canvas = tk.Canvas(main_list_frame, bg=C("bg"), highlightthickness=0)
+scrollbar = tk.Scrollbar(main_list_frame, orient="vertical", command=canvas.yview)
+tasks_frame = tk.Frame(canvas, bg=C("bg"))
 
 # Horizontal scrollbar
 horizontal_scrollbar = tk.Scrollbar(
@@ -998,7 +1351,7 @@ canvas.pack(side="left", fill = "both", expand = True)
 
 # Start with placeholder text and refresh the whole GUI
 set_placeholder()
-refresh_all()
+apply_theme()
 
 # Enable scrolling in the task area
 bind_mousewheel(canvas)
