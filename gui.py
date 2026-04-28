@@ -929,19 +929,32 @@ completed_button.pack(side="left", padx=6)
 main_list_frame = tk.Frame(content, bg="#ffd9e8")
 main_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
+# New container for canvas + scrollbars
+scroll_frame = tk.Frame(main_list_frame, bg="#ffd9e8")
+scroll_frame.pack(fill="both", expand=True)
 
 # Canvas + scrollbar setup makes the task list scrollable
-canvas = tk.Canvas(main_list_frame, bg="#ffd9e8", highlightthickness=0)
-scrollbar = tk.Scrollbar(main_list_frame, orient="vertical", command=canvas.yview)
-tasks_frame = tk.Frame(canvas, bg="#ffd9e8")
+canvas = tk.Canvas(scroll_frame, bg="#ffd9e8", highlightthickness=0)
 
-
-# Update the scroll area whenever the task frame changes size
-tasks_frame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+# Vertical Scrollbar
+vertical_scrollbar = tk.Scrollbar(
+    scroll_frame,
+    orient = "vertical",
 )
 
+# Horizontal scrollbar
+horizontal_scrollbar = tk.Scrollbar(
+    scroll_frame,
+    orient = "horizontal",
+)
+#Frame inside canvas that holds all task widgets
+tasks_frame = tk.Frame(canvas, bg="#ffd9e8")
+
+# Update the scroll area whenever the task frame changes size
+def update_scrollregion(event=None):
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+tasks_frame.bind("<Configure>", update_scrollregion)
 
 # Mouse wheel scrolling
 def _on_mousewheel_windows(event):
@@ -966,11 +979,22 @@ def bind_mousewheel(widget):
 
 
 # Put the task frame inside the canvas and connect scrollbar
-canvas.create_window((0, 0), window=tasks_frame, anchor="nw")
-canvas.configure(yscrollcommand=scrollbar.set)
+canvas_window = canvas.create_window(
+    (0, 0), 
+    window=tasks_frame, 
+    anchor="nw")
 
-canvas.pack(side="left", fill="both", expand=True)
-scrollbar.pack(side="right", fill="y")
+vertical_scrollbar.config(command=canvas.yview)
+horizontal_scrollbar.config(command=canvas.xview)
+
+canvas.configure(
+    yscrollcommand=vertical_scrollbar.set,
+    xscrollcommand=horizontal_scrollbar.set
+)
+
+horizontal_scrollbar.pack(side = "bottom", fill = "x")
+vertical_scrollbar.pack(side = "right", fill = "y")
+canvas.pack(side="left", fill = "both", expand = True)
 
 # Start with placeholder text and refresh the whole GUI
 set_placeholder()
