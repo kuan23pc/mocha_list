@@ -9,6 +9,7 @@ from main import tasks, save_tasks
 # Global state variables used for filtering and list navigation
 current_filter = "all"
 current_list_index = 0
+TASK_ROW_WIDTH = 700
 
 # Color themes for the GUI
 # Current selected theme
@@ -190,7 +191,6 @@ THEMES = {
     }
 
 }
-
 
 
 def C(color_name):
@@ -692,14 +692,6 @@ def add_task_gui():
     flash_add_button()
     refresh_all()
 
-    #reset input field and restore placeholder
-    entry.delete(0, tk.END)
-    entry.config(fg=NORMAL_ENTRY_COLOR)
-    set_placeholder()
-
-    flash_add_button() #Visual feedback and UI refresh
-    refresh_all()
-
 def add_task_with_enter(event): #Allows pressing enter to add a task
     add_task_gui()
 
@@ -767,10 +759,10 @@ def refresh_tasks():
                 bg=C("row"),
                 bd=1,
                 relief="solid",
-                padx=12,
-                pady=10
+                padx=8,
+                pady=5
             )
-            row.pack(fill="x", padx=20, pady=8)
+            row.pack(fill="x", padx=10, pady=5)
 
             left_frame = tk.Frame(row, bg=C("row"))
             left_frame.pack(side="left", fill="x", expand=True)
@@ -813,7 +805,9 @@ def refresh_tasks():
                 fg=C("text"),
                 bg=C("row"),
                 font=task_font,
-                anchor="w"
+                anchor="w",
+                justify="left",
+                wraplength=360
             )
             task_label.pack(side="left", fill="x", expand=True)
 
@@ -884,6 +878,7 @@ def refresh_tasks():
             )
             delete_button.grid(row=0, column=2, padx=4, pady=2)
 
+    root.after_idle(update_scrollbars)
 
 def refresh_all():
     refresh_sidebar()
@@ -911,6 +906,9 @@ def apply_theme():
     )
 
     main_container.config(bg=C("bg"))
+
+    content_scroll_area.config(bg=C("bg"))
+    content_canvas.config(bg=C("bg"))
 
     sidebar.config(bg=C("sidebar"))
     sidebar_title.config(bg=C("sidebar"), fg=C("accent"))
@@ -950,9 +948,12 @@ def apply_theme():
         fg=C("text")
     )
 
+    sidebar_scroll_container.config(bg=C("sidebar"))
+    sidebar_canvas.config(bg=C("sidebar"))
     sidebar_lists_frame.config(bg=C("sidebar"))
 
     content.config(bg=C("bg"))
+    top_center_frame.config(bg=C("bg"))
     title_label.config(bg=C("bg"), fg=C("accent"))
     list_title_label.config(bg=C("bg"), fg=C("accent_dark"))
     counter_label.config(bg=C("bg"), fg=C("text"))
@@ -988,6 +989,7 @@ def apply_theme():
     filter_frame.config(bg=C("bg"))
 
     main_list_frame.config(bg=C("bg"))
+    scroll_frame.config(bg=C("bg"))
     canvas.config(bg=C("bg"))
     tasks_frame.config(bg=C("bg"))
 
@@ -1017,6 +1019,7 @@ except Exception:
 root.title("CALM List")
 root.geometry("1220x760")
 root.configure(bg=C("bg"))
+CONTENT_MIN_WIDTH = 760
 
 
 # Progress bar style
@@ -1130,17 +1133,130 @@ theme_menu["menu"].config(
 theme_menu.pack(pady=(0, 15))
 
 
-# Frame where the available lists will be displayed
-sidebar_lists_frame = tk.Frame(sidebar, bg=C("sidebar"))
-sidebar_lists_frame.pack(fill="both", expand=True, padx=8, pady=8)
+# Scrollable area where the available lists will be displayed
+sidebar_scroll_container = tk.Frame(sidebar, bg=C("sidebar"))
+sidebar_scroll_container.pack(fill="both", expand=True, padx=8, pady=8)
 
-# Main content area where tasks and controls are shown
-content = tk.Frame(main_container, bg=C("bg"))
-content.pack(side="left", fill="both", expand=True)
+sidebar_scroll_container.grid_rowconfigure(0, weight=1)
+sidebar_scroll_container.grid_columnconfigure(0, weight=1)
 
+sidebar_canvas = tk.Canvas(
+    sidebar_scroll_container,
+    bg=C("sidebar"),
+    highlightthickness=0
+)
+
+sidebar_scrollbar = tk.Scrollbar(
+    sidebar_scroll_container,
+    orient="vertical",
+    command=sidebar_canvas.yview
+)
+
+sidebar_lists_frame = tk.Frame(sidebar_canvas, bg=C("sidebar"))
+
+sidebar_window = sidebar_canvas.create_window(
+    (0, 0),
+    window=sidebar_lists_frame,
+    anchor="nw"
+)
+
+
+def update_sidebar_scrollbar(event=None):
+    sidebar_canvas.update_idletasks()
+
+    canvas_width = sidebar_canvas.winfo_width()
+    canvas_height = sidebar_canvas.winfo_height()
+    content_height = sidebar_lists_frame.winfo_reqheight()
+
+    sidebar_canvas.itemconfig(sidebar_window, width=canvas_width)
+
+    sidebar_canvas.configure(
+        scrollregion=(0, 0, canvas_width, content_height)
+    )
+
+    # Show scrollbar only if there are too many lists
+    if content_height > canvas_height:
+        sidebar_scrollbar.grid(row=0, column=1, sticky="ns")
+    else:
+        sidebar_scrollbar.grid_remove()
+        sidebar_canvas.yview_moveto(0)
+
+
+sidebar_canvas.configure(yscrollcommand=sidebar_scrollbar.set)
+
+sidebar_canvas.grid(row=0, column=0, sticky="nsew")
+sidebar_scrollbar.grid(row=0, column=1, sticky="ns")
+sidebar_scrollbar.grid_remove()
+
+sidebar_lists_frame.bind("<Configure>", update_sidebar_scrollbar)
+sidebar_canvas.bind("<Configure>", update_sidebar_scrollbar)
+
+# Main content area with horizontal scroll when the window is too small
+content_scroll_area = tk.Frame(main_container, bg=C("bg"))
+content_scroll_area.pack(side="left", fill="both", expand=True)
+
+content_canvas = tk.Canvas(
+    content_scroll_area,
+    bg=C("bg"),
+    highlightthickness=0
+)
+content_canvas.pack(side="top", fill="both", expand=True)
+
+content_horizontal_scrollbar = tk.Scrollbar(
+    content_scroll_area,
+    orient="horizontal",
+    command=content_canvas.xview
+)
+
+content_canvas.configure(xscrollcommand=content_horizontal_scrollbar.set)
+
+content = tk.Frame(content_canvas, bg=C("bg"))
+
+content_window = content_canvas.create_window(
+    (0, 0),
+    window=content,
+    anchor="nw"
+)
+
+def update_content_horizontal_scroll(event=None):
+    content_canvas.update_idletasks()
+
+    visible_width = content_canvas.winfo_width()
+    visible_height = content_canvas.winfo_height()
+
+    needed_width = max(CONTENT_MIN_WIDTH, content.winfo_reqwidth())
+
+    # Make the content at least as wide as the visible area.
+    # This keeps the top section centered in the whole right side.
+    display_width = max(visible_width, needed_width)
+
+    content_canvas.coords(content_window, 0, 0)
+
+    content_canvas.itemconfig(
+        content_window,
+        width=display_width,
+        height=visible_height
+    )
+
+    content_canvas.configure(
+        scrollregion=(0, 0, display_width, visible_height)
+    )
+
+    # Show horizontal scrollbar only when needed
+    if needed_width > visible_width:
+        content_horizontal_scrollbar.pack(side="bottom", fill="x")
+    else:
+        content_horizontal_scrollbar.pack_forget()
+        content_canvas.xview_moveto(0)
+
+content.bind("<Configure>", update_content_horizontal_scroll)
+content_canvas.bind("<Configure>", update_content_horizontal_scroll)
+
+top_center_frame = tk.Frame(content, bg=C("bg"))
+top_center_frame.pack(fill="x")
 title_label = tk.Label(
-    content,
-    text="Mocha List",
+    top_center_frame,
+    text="CALM List",
     bg=C("bg"),
     fg=C("accent"),
     font=("Times New Roman", 30, "bold italic")
@@ -1149,7 +1265,7 @@ title_label.pack(pady=(20, 8))
 
 # Shows the currently selected list name
 list_title_label = tk.Label(
-    content,
+    top_center_frame,
     text="",
     bg=C("bg"),
     fg=C("accent_dark"),
@@ -1159,7 +1275,7 @@ list_title_label.pack(pady=(0, 8))
 
 # Shows task counters such as total/completed/remaining
 counter_label = tk.Label(
-    content,
+    top_center_frame,
     text="",
     bg=C("bg"),
     fg=C("text"),
@@ -1169,7 +1285,7 @@ counter_label.pack(pady=(0, 10))
 
 # Shows progress in text form
 progress_label = tk.Label(
-    content,
+    top_center_frame,
     text="Progress: 0%",
     bg=C("bg"),
     fg=C("text"),
@@ -1180,7 +1296,7 @@ progress_label.pack(pady=(0, 6))
 
 # Progress bar for completed tasks
 progress_bar = ttk.Progressbar(
-    content,
+    top_center_frame,
     style="Theme.Horizontal.TProgressbar",
     orient="horizontal",
     length=320,
@@ -1189,7 +1305,7 @@ progress_bar = ttk.Progressbar(
 progress_bar.pack(pady=(0, 16))
 
 # Top frame contains task input and action buttons
-top_frame = tk.Frame(content, bg=C("bg"))
+top_frame = tk.Frame(top_center_frame, bg=C("bg"))
 top_frame.pack(pady=10)
 
 # Entry box for typing a new task
@@ -1239,7 +1355,7 @@ clear_completed_button.pack(side="left", padx=8, ipadx=6, ipady=4)
 
 
 # Filter section for showing all, active, or completed tasks
-filter_frame = tk.Frame(content, bg=C("bg"))
+filter_frame = tk.Frame(top_center_frame, bg=C("bg"))
 filter_frame.pack(pady=(8, 16))
 
 
@@ -1281,45 +1397,128 @@ completed_button = tk.Button(
 )
 completed_button.pack(side="left", padx=6)
 
-
 # Main area for the scrollable task list
 main_list_frame = tk.Frame(content, bg=C("bg"))
-main_list_frame.pack(fill="both", expand=True, padx=20, pady=10)
+main_list_frame.pack(fill="both", expand=True, padx=(20, 0), pady=10)
 
-# New container for canvas + scrollbars
-scroll_frame = tk.Frame(main_list_frame, bg="#ffd9e8")
+# Frame that contains the task list canvas and vertical scrollbar
+scroll_frame = tk.Frame(main_list_frame, bg=C("bg"))
 scroll_frame.pack(fill="both", expand=True)
 
-# Canvas + scrollbar setup makes the task list scrollable
+scroll_frame.grid_rowconfigure(0, weight=1)
+scroll_frame.grid_columnconfigure(0, weight=1)
 
-canvas = tk.Canvas(main_list_frame, bg=C("bg"), highlightthickness=0)
-scrollbar = tk.Scrollbar(main_list_frame, orient="vertical", command=canvas.yview)
+# Canvas where only the task rows are shown
+canvas = tk.Canvas(
+    scroll_frame,
+    bg=C("bg"),
+    highlightthickness=0
+)
+
+# Vertical scrollbar for scrolling tasks up and down
+scrollbar = tk.Scrollbar(
+    scroll_frame,
+    orient="vertical",
+    command=canvas.yview
+)
+
+# Frame inside canvas that holds all task widgets
 tasks_frame = tk.Frame(canvas, bg=C("bg"))
 
-# Update the scroll area whenever the task frame changes size
-tasks_frame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+canvas_window = canvas.create_window(
+    (0, 0),
+    window=tasks_frame,
+    anchor="nw"
 )
 
-# Horizontal scrollbar
-horizontal_scrollbar = tk.Scrollbar(
-    scroll_frame,
-    orient = "horizontal",
-)
-#Frame inside canvas that holds all task widgets
-tasks_frame = tk.Frame(canvas, bg="#ffd9e8")
+def update_scrollbars(event=None):
+    canvas.update_idletasks()
 
-# Update the scroll area whenever the task frame changes size
-def update_scrollregion(event=None):
-    canvas.configure(scrollregion=canvas.bbox("all"))
+    canvas_width = canvas.winfo_width()
+    canvas_height = canvas.winfo_height()
 
-tasks_frame.bind("<Configure>", update_scrollregion)
+    content_height = tasks_frame.winfo_reqheight()
 
-# Mouse wheel scrolling
+    # Task-rutorna ska bara vara denna bredd och ligga till vänster
+    task_area_width = min(TASK_ROW_WIDTH, canvas_width)
+
+    # Detta påverkar bara bredden på task-rutorna
+    canvas.itemconfig(canvas_window, width=task_area_width)
+
+    # Detta gör att canvas fortfarande använder hela bredden,
+    # så scrollbaren hamnar längst till höger
+    canvas.configure(
+        scrollregion=(0, 0, canvas_width, content_height)
+    )
+
+    # Visa scrollbaren bara om task-listan är längre än synliga området
+    if content_height > canvas_height:
+        scrollbar.grid(row=0, column=1, sticky="ns")
+    else:
+        scrollbar.grid_remove()
+        canvas.yview_moveto(0)
+
+tasks_frame.bind("<Configure>", update_scrollbars)
+canvas.bind("<Configure>", update_scrollbars)
+
+canvas.configure(yscrollcommand=scrollbar.set)
+
+# Layout: canvas in the middle, vertical scrollbar on the right
+canvas.grid(row=0, column=0, sticky="nsew")
+scrollbar.grid(row=0, column=1, sticky="ns")
+
+# Hide scrollbar at startup. It appears only when needed.
+scrollbar.grid_remove()
+
+# Mouse wheel scrolling only moves the task list up/down
+# Checks if the mouse pointer is inside a specific widget
+def pointer_inside(widget, event):
+    x = event.x_root
+    y = event.y_root
+
+    widget_x = widget.winfo_rootx()
+    widget_y = widget.winfo_rooty()
+    widget_width = widget.winfo_width()
+    widget_height = widget.winfo_height()
+
+    return (
+        widget_x <= x <= widget_x + widget_width
+        and widget_y <= y <= widget_y + widget_height
+    )
+
+
+# Mouse wheel scrolls task list vertically, but only when needed
 def _on_mousewheel_windows(event):
-    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+    # Scroll sidebar lists if mouse is over the sidebar list area
+    if pointer_inside(sidebar_canvas, event) and sidebar_scrollbar.winfo_ismapped():
+        sidebar_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+    # Scroll task list if mouse is over the task area
+    elif pointer_inside(canvas, event) and scrollbar.winfo_ismapped():
+        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+# Shift + mouse wheel scrolls the whole right side sideways
+def _on_shift_mousewheel_windows(event):
+    if pointer_inside(content_canvas, event) and content_horizontal_scrollbar.winfo_ismapped():
+        content_canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
+
+
+# Linux scroll up
+def _on_mousewheel_linux_up(event):
+    if pointer_inside(canvas, event) and scrollbar.winfo_ismapped():
+        canvas.yview_scroll(-1, "units")
+
+
+# Linux scroll down
+def _on_mousewheel_linux_down(event):
+    if pointer_inside(canvas, event) and scrollbar.winfo_ismapped():
+        canvas.yview_scroll(1, "units")
+
+
+root.bind_all("<MouseWheel>", _on_mousewheel_windows)
+root.bind_all("<Shift-MouseWheel>", _on_shift_mousewheel_windows)
+root.bind_all("<Button-4>", _on_mousewheel_linux_up)
+root.bind_all("<Button-5>", _on_mousewheel_linux_down)
 # Scroll up on Linux
 def _on_mousewheel_linux_up(event):
     canvas.yview_scroll(-1, "units")
@@ -1328,9 +1527,14 @@ def _on_mousewheel_linux_up(event):
 def _on_mousewheel_linux_down(event):
     canvas.yview_scroll(1, "units")
 
+# Shift + mouse wheel scrolls sideways on Windows
+def _on_shift_mousewheel_windows(event):
+    canvas.xview_scroll(int(-1 * (event.delta / 120)), "units")
+
 # Add mouse wheel scrolling to a widget and all its child widgets
 def bind_mousewheel(widget):
     widget.bind("<MouseWheel>", _on_mousewheel_windows)
+    widget.bind("<Shift-MouseWheel>", _on_shift_mousewheel_windows)
     widget.bind("<Button-4>", _on_mousewheel_linux_up)
     widget.bind("<Button-5>", _on_mousewheel_linux_down)
 
@@ -1338,32 +1542,11 @@ def bind_mousewheel(widget):
         bind_mousewheel(child)
 
 
-# Put the task frame inside the canvas and connect scrollbar
-canvas_window = canvas.create_window(
-    (0, 0), 
-    window=tasks_frame, 
-    anchor="nw")
-
-vertical_scrollbar.config(command=canvas.yview)
-horizontal_scrollbar.config(command=canvas.xview)
-
-canvas.configure(
-    yscrollcommand=vertical_scrollbar.set,
-    xscrollcommand=horizontal_scrollbar.set
-)
-
-horizontal_scrollbar.pack(side = "bottom", fill = "x")
-vertical_scrollbar.pack(side = "right", fill = "y")
-canvas.pack(side="left", fill = "both", expand = True)
-
 # Start with placeholder text and refresh the whole GUI
 set_placeholder()
 apply_theme()
 
-# Enable scrolling in the task area
-bind_mousewheel(canvas)
-bind_mousewheel(tasks_frame)
-bind_mousewheel(main_list_frame)
+
 
 # Start the Tkinter event loop
 root.mainloop()
