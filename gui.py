@@ -177,8 +177,8 @@ def delete_current_list():
 
     title = tasks[current_list_index]["title"]
     #Ask user for confirmation
-    confirm = messagebox.askyesno
-    ("Delete List", 
+    confirm = messagebox.askyesno(
+     "Delete List", 
      f"Are you sure you want to delete the list '{title}'?"
     )
     if not confirm:
