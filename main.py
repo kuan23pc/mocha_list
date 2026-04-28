@@ -75,9 +75,12 @@ def save_tasks():
 
 #Function to add a new task
 def add_task():
-    task = input("Enter a new task: ")
-    deadline = input("Enter a deadline (or leave blank): ")
-    description = input("Enter a description (or leave blank): ")
+    task = get_required_input("Enter a new task: ", "Task cannot be empty.")
+    if task is None:
+        return
+    
+    deadline = safe_input("Enter a deadline (or leave blank): ")
+    description = safe_input("Enter a description (or leave blank): ")
 
     tasks.append({
         "title": task,
