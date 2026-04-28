@@ -75,15 +75,17 @@ def save_tasks():
 
 #Function to add a new task
 def add_task():
-    task = get_required_input("Enter task: ", "Task cannot be empty.")
-    if task is None:
-        return
+    task = input("Enter a new task: ")
+    deadline = input("Enter a deadline (or leave blank): ")
+    description = input("Enter a description (or leave blank): ")
 
     tasks.append({
-        "title": task, 
+        "title": task,
         "completed": False,
-        "deadline" : None
+        "deadline": deadline if deadline else None,
+        "description": description if description else None
     })
+
     save_tasks()
     print(f"Task '{task}' added!")
 
@@ -106,6 +108,10 @@ def show_tasks():
         deadline_text = f" (Deadline: {deadline})" if deadline else ""
 
         print(f"{i}. {task['title']}{deadline_text}: {status}")
+
+        description = task.get("description")
+        if description:
+            print(f"   Description: {description}")
 
 
 #Funktion to DELETE a task CO
