@@ -12,6 +12,39 @@ def safe_input(prompt):
         print("\nInput cancelled.")
         return None
 
+
+# helper for empty text input
+def get_required_input(prompt, error_message):
+    value = safe_input(prompt)
+
+    if value is None:
+        return None
+
+    if value == "":
+        print(error_message)
+        return None
+
+    return value
+
+
+# helper for number input
+def get_valid_number(prompt):
+    value = safe_input(prompt)
+
+    if value is None:
+        return None
+
+    if value == "":
+        print("Task number cannot be empty.")
+        return None
+
+    if not value.isdigit():
+        print("Please enter a valid number.")
+        return None
+
+    return int(value)
+
+
 #load task from file if it exists,otherwise return empty list
 def load_tasks():
     if os.path.exists(FILE_NAME):
@@ -42,12 +75,8 @@ def save_tasks():
 
 #Function to add a new task
 def add_task():
-    task = safe_input("Enter task: ")
+    task = get_required_input("Enter task: ", "Task cannot be empty.")
     if task is None:
-        return
-
-    if task == "":
-        print("Task cannot be empty.")
         return
 
     tasks.append({
@@ -79,34 +108,25 @@ def show_tasks():
         print(f"{i}. {task['title']}{deadline_text}: {status}")
 
 
-
 #Funktion to DELETE a task CO
 def delete_tasks():
     if not tasks:
-        print("No tasks available to delete.") #kontrollera om listan är tom
+        print("No tasks available to delete.")
         return 
 
-    show_tasks() #visa alla tasks först 
+    show_tasks()
 
-    task_to_delete = safe_input("Enter the task number to delete: ")
+    task_to_delete = get_valid_number("Enter the task number to delete: ")
     if task_to_delete is None:
         return
-
-    if task_to_delete == "":
-        print("Task number cannot be empty.")
-        return
-
-    if not task_to_delete.isdigit():  #kontrollera att det är en siffra 
-        print("Please enter a valid number.")
-        return 
     
-    index = int(task_to_delete) - 1 #omvandla till python index (python börjar på 0, användare börjar på 1)
+    index = task_to_delete - 1
 
     if index < 0 or index >= len(tasks):
         print("Task number not found.")
         return 
     
-    removed_task= tasks.pop(index)
+    removed_task = tasks.pop(index)
     save_tasks()
     print(f"Task '{removed_task['title']}' deleted!")
 
@@ -116,21 +136,13 @@ def mark_task_completed():
         print("No tasks available.")
         return 
     
-    show_tasks() #visa alla tasks först
+    show_tasks()
 
-    task_to_complete = safe_input("Enter the task number to mark as completed: ")
+    task_to_complete = get_valid_number("Enter the task number to mark as completed: ")
     if task_to_complete is None:
         return
-
-    if task_to_complete == "":
-        print("Task number cannot be empty.")
-        return
     
-    if not task_to_complete.isdigit():
-        print("Please enter a valid number.")
-        return
-    
-    index = int(task_to_complete) - 1
+    index = task_to_complete - 1
 
     if index < 0 or index >= len(tasks):
         print("Task number not found.")
@@ -153,30 +165,22 @@ def set_deadline():
         return
     
     show_tasks()
-    choice = safe_input("Enter task number to set deadline: ")
+
+    choice = get_valid_number("Enter task number to set deadline: ")
     if choice is None:
         return
-
-    if choice == "":
-        print("Task number cannot be empty.")
-        return
-
-    if not choice.isdigit():
-        print("Please enter a valid number.")
-        return
     
-    index = int(choice) - 1
+    index = choice - 1
 
     if index < 0 or index >= len(tasks):
         print("Task not found.")
         return
     
-    deadline = safe_input("Enter deadline (YYYY-MM-DD): ")
+    deadline = get_required_input(
+        "Enter deadline (YYYY-MM-DD): ",
+        "Deadline cannot be empty."
+    )
     if deadline is None:
-        return
-
-    if deadline == "":
-        print("Deadline cannot be empty.")
         return
     
     try:
@@ -197,7 +201,7 @@ def set_deadline():
     print(f"⏰ Deadline added to '{tasks[index]['title']}'!")
 
 #Main program loop
-def main ():
+def main():
     while True:
         print("\n1. Add task")
         print("2. Show tasks")

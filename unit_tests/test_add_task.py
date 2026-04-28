@@ -9,7 +9,7 @@ class TestAddTask(unittest.TestCase):
         self.original_save = main.save_tasks
         self.original_print = builtins.print
 
-        main.tasks = [] #Reset tasks before each test
+        main.tasks = [] # Reset tasks before each test
 
         #Replace input with fixed value
         main.safe_input = lambda _: "Test task"
@@ -58,6 +58,7 @@ class TestAddTask(unittest.TestCase):
 
         #No task should be added
         self.assertEqual(len(main.tasks), 0)
+    
 
 if __name__ == "__main__":
     unittest.main()
