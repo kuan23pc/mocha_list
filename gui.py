@@ -1,4 +1,4 @@
-#GUI module for the task manager application
+# GUI module for the task manager application
 # Allowing users to manage tasks visually instead of using the CLI
 import tkinter as tk
 import tkinter.font as tkfont
@@ -6,7 +6,7 @@ from tkinter import simpledialog, messagebox, ttk
 from datetime import datetime
 from main import tasks, save_tasks
 
-#Global state variables used for filtering and list navigation
+# Global state variables used for filtering and list navigation
 current_filter = "all"
 current_list_index = 0
 
@@ -230,19 +230,19 @@ def normalize_data():
             if "description" not in task:
                 task["description"] = "" # ensure description field exists
 
-    #Adjust current list index to stay within bounds
+    # Adjust current list index to stay within bounds
     if len(tasks) == 0:
         current_list_index = -1
     elif current_list_index >= len(tasks):
         current_list_index = len(tasks) - 1 # move to last vaild index 
 
-#returns tasks from the currently selected list
+# returns tasks from the currently selected list
 def get_current_tasks():
     if current_list_index == -1 or not tasks:
         return []
     return tasks[current_list_index]["tasks"] # return tasks of active list
 
-#Returns the title of the currently selected list
+# Returns the title of the currently selected list
 def get_current_list_title():
     if current_list_index == -1 or not tasks:
         return "No List Selected"
@@ -314,7 +314,7 @@ def validate_deadline(deadline_text):
     return True, None
 
 
-#Sidebar list functions, selects a list from the sidebar and refreshes UI
+# Sidebar list functions, selects a list from the sidebar and refreshes UI
 def select_list(index):
     global current_list_index
     if 0 <= index < len(tasks): # ensure index is within vaild tange
@@ -997,7 +997,7 @@ def apply_theme():
 # GUI setup
 
 import ctypes
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("mochalist.app.1.0")
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("calmlist.app.1.0")
 # Set a custom app ID for Windows so the app can use its own icon properly
 
 normalize_data()
@@ -1014,7 +1014,7 @@ except Exception:
     pass
 
 # Main window settings
-root.title("Mocha List")
+root.title("CALM List")
 root.geometry("1220x760")
 root.configure(bg=C("bg"))
 
