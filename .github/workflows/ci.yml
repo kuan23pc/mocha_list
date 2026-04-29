@@ -29,6 +29,31 @@ jobs:
       - name: Generate HTML coverage report
         run: python -m coverage html
 
+      - name: Create project zip
+        run: |
+          mkdir -p artifacts/project/app
+          mkdir -p artifacts/project/tests
+          mkdir -p artifacts/project/ci
+          mkdir -p artifacts/project/docs
+
+          cp main.py artifacts/project/app/
+          cp gui.py artifacts/project/app/
+          if [ -f icon.png ]; then cp icon.png artifacts/project/app/; fi
+
+          cp -r unit_tests artifacts/project/tests/
+          cp -r .github artifacts/project/ci/
+
+          if [ -f README.md ]; then cp README.md artifacts/project/docs/; fi
+
+          cd artifacts
+          zip -r project-files.zip project
+
+      - name: Upload project zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-files
+          path: artifacts/project-files.zip
+
       - name: Upload HTML coverage artifact
         uses: actions/upload-artifact@v4
         with:
