@@ -33,9 +33,11 @@ jobs:
         run: |
           mkdir -p artifacts/project
           cp main.py artifacts/project/
+          cp gui.py artifacts/project/
           cp -r unit_tests artifacts/project/
           cp -r .github artifacts/project/
           if [ -f README.md  ]; then cp README.md artifacts/project/; fi
+          if [ -f icon.png ]; then cp icon.png artifacts/project/; fi
           cd artifacts
           zip -r project-files.zip project
 
