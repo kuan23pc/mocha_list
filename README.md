@@ -145,3 +145,6 @@ python -m flake8 .
 ```
 
 This will analyze the code and display any style or formatting issues.
+
+## License
+This project is licensed under the MIT License. 
