@@ -4,6 +4,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import simpledialog, messagebox, ttk
 from datetime import datetime
+import json
 from main import tasks, save_tasks
 
 # Global state variables used for filtering and list navigation
@@ -14,6 +15,7 @@ TASK_ROW_WIDTH = 700
 # Color themes for the GUI
 # Current selected theme
 current_theme = "Calm Breeze"
+SETTINGS_FILE = "settings.json"
 
 # Color themes for the GUI
 THEMES = {
@@ -192,6 +194,26 @@ THEMES = {
 
 }
 
+# Save selected theme to settings file
+def save_theme():
+    with open(SETTINGS_FILE, "w") as file:
+        json.dump({"theme": current_theme}, file)
+
+# Load saved theme when app starts
+def load_theme():
+    global current_theme
+
+    try:
+        with open(SETTINGS_FILE, "r") as file:
+            data = json.load(file)
+
+            saved_theme = data.get("theme", "Calm Breeze")
+            # Use saved theme if it exists
+            if saved_theme in THEMES:
+                current_theme = saved_theme
+   # Ignore if settings file does not exist
+    except FileNotFoundError:
+        pass
 
 def C(color_name):
     return THEMES[current_theme][color_name]
@@ -890,6 +912,7 @@ def refresh_all():
 def change_theme(selected_theme):
     global current_theme
     current_theme = selected_theme
+    save_theme()
     apply_theme()
 
 
@@ -1004,6 +1027,7 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("calmlist.app.1.0"
 
 normalize_data()
 # Make sure the task data is in the correct format before the GUI starts
+load_theme()
 
 root = tk.Tk()
 # Create the main window
