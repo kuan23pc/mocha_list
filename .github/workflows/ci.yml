@@ -1,10 +1,12 @@
-name: CI Artifacts
+name: CI Artifacts and Release
 
 on:
   push:
     branches:
       - main
       - artifacts-update
+    tags:
+      - 'v*'
   pull_request:
 
 jobs:
@@ -24,7 +26,9 @@ jobs:
         run: python -m py_compile main.py gui.py
 
       - name: Install coverage
-        run: python -m pip install coverage
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install coverage
 
       - name: Run unit tests with coverage
         run: python -m coverage run -m unittest discover -s unit_tests -p "test*.py" -v
@@ -32,7 +36,7 @@ jobs:
       - name: Generate HTML coverage report
         run: python -m coverage html --title="CALM List Coverage Report" -d artifacts/html-coverage-report
 
-      - name: Add clean coverage summary page
+      - name: Create coverage summary page
         run: |
           cat > artifacts/html-coverage-report/coverage-summary.html <<'EOF'
           <!DOCTYPE html>
@@ -41,55 +45,80 @@ jobs:
             <meta charset="UTF-8">
             <title>CALM List Coverage Summary</title>
           </head>
-          <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6;">
+          <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto;">
             <h1>CALM List - Coverage Report</h1>
-            <p>This folder contains the generated HTML coverage report from the unit tests.</p>
-
-            <h2>Open the report</h2>
-            <p>
-              <a href="index.html" style="font-size: 20px; font-weight: bold;">
-                Open Full HTML Coverage Report
-              </a>
-            </p>
-
-            <p><strong>Note:</strong> The full coverage report needs all files in this folder to work correctly.</p>
+            <p>This folder contains the generated HTML coverage report.</p>
+            <p><a href="index.html">Open Full Coverage Report</a></p>
           </body>
           </html>
           EOF
 
-      - name: Zip HTML coverage report
+      - name: Zip coverage report
         run: |
           cd artifacts
           zip -r html-coverage-report.zip html-coverage-report
 
-      - name: Create organized project zip
+      - name: Create deployable project package
         run: |
           mkdir -p artifacts/project/app
           mkdir -p artifacts/project/tests
-          mkdir -p artifacts/project/ci
           mkdir -p artifacts/project/docs
+          mkdir -p artifacts/project/ci
 
           cp main.py artifacts/project/app/
           cp gui.py artifacts/project/app/
 
           if [ -f tasks.json ]; then cp tasks.json artifacts/project/app/; fi
-          if [ -f icon.png ]; then cp icon.png artifacts/project/app/; fi
           if [ -f README.md ]; then cp README.md artifacts/project/docs/; fi
+          if [ -f icon.png ]; then cp icon.png artifacts/project/app/; fi
 
           cp -r unit_tests artifacts/project/tests/
           cp -r .github artifacts/project/ci/
 
           cd artifacts
-          zip -r project-files.zip project
+          zip -r project-files-${{ github.run_number }}.zip project
 
-      - name: Upload project files artifact
+      - name: Upload deployable artifact
         uses: actions/upload-artifact@v4
         with:
-          name: project-files
-          path: artifacts/project-files.zip
+          name: project-files-${{ github.run_number }}
+          path: artifacts/project-files-${{ github.run_number }}.zip
+          retention-days: 30
 
-      - name: Upload HTML coverage artifact
+      - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
-          name: html-coverage-report
+          name: html-coverage-report-${{ github.run_number }}
           path: artifacts/html-coverage-report.zip
+          retention-days: 30
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create release package
+        run: |
+          mkdir release
+
+          cp main.py release/
+          cp gui.py release/
+
+          if [ -f tasks.json ]; then cp tasks.json release/; fi
+          if [ -f README.md ]; then cp README.md release/; fi
+          if [ -f icon.png ]; then cp icon.png release/; fi
+
+          zip -r calm-list-${{ github.ref_name }}.zip release
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          files: calm-list-${{ github.ref_name }}.zip
+          body: Automated release created by GitHub Actions.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
