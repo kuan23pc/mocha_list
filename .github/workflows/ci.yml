@@ -53,6 +53,12 @@ jobs:
           </html>
           EOF
 
+      - name: Clean coverage report (remove png, js, css)
+        run: |
+          find artifacts/html-coverage-report -name "*.png" -delete
+          find artifacts/html-coverage-report -name "*.js" -delete
+          find artifacts/html-coverage-report -name "*.css" -delete
+
       - name: Zip coverage report
         run: |
           cd artifacts
