@@ -3,14 +3,16 @@
 [![CI](https://github.com/kuan23pc/group_project/actions/workflows/ci.yml/badge.svg)](https://github.com/kuan23pc/group_project/actions)
  
 
-## Project description 
-CALM List is a task management system that allows users to create, organize, and track tasks. The system is designed to help users manage their daily activities and improve productivity. 
+## Project Description 
+CALM List is a desktop task management application built with Python. 
 
-The application supports deadlines and provides a structured way to manage tasks.
+It helps users organize their daily tasks, manage deadlines, track progress, and improve productivity. 
 
-## Team members
+The application supports both a **Command Line Interface (CLI)** and a **Graphical User Interface (GUI)**. 
 
-| Name | GitHub username |
+## Team Members
+
+| Name | GitHub Username |
 |------|------------------|
 | Andjela Kuzamanovski | @kuan23pc |
 | Isabella Lazar | @issaabellaa |
@@ -29,39 +31,61 @@ I, Christina Outra, declare that I am the sole author of the content I add to th
    
 
 ## Features 
-- Add new tasks
-- Delete existing tasks
-- Mark tasks as completed
-- Set and update deadlines
-- Add descriptions to tasks
-- Filter tasks (all, active, completed)
-- View all tasks in a list
-- Save tasks in a file
-- Load tasks from a file
-- GUI interface for visual task management. 
 
-## How it will work 
+### Task Management
+- Add new tasks
+- Edit existing tasks
+- Delete tasks
+- Mark tasks as completed
+- Clear completed tasks
+- Add task descriptions
+- Set and update deadlines
+
+### Organization
+- Create multiple task lists
+- Rename lists
+- Delete lists
+- Navigate between lists through the sidebar 
+
+### Productivity
+- Filter tasks: All, Active, Completed
+- View total, completed, and remaining tasks
+- Progress bar showing completion percentage
+
+### Interfaces
+- Command Line Interface (CLI) 
+- Graphical User Interface (GUI)
+
+### Data Storage
+- Save tasks automatically to file 
+- Load tasks when starting the application
+
+
+## How It Works
 The application can be used in two different ways: 
 
 ### Command Line Interface (CLI)
-Users interact with the system by typing commands in the terminal. 
+Users interact with the program through terminal commands. 
 
 ### Graphical User Interface (GUI)
-Users can manage tasks visually using a Tkinter-based interface. 
+Users manage tasks visually through a Tkinter desktop interface. 
 
-Both interfaces use the same data stored in a JSON file. 
+Both interfaces use the same stored data, allowing users to switch between CLI and GUI. 
+
 
 ## Programming Language
 The project is implemented in Python 3. 
 
 Python is used because it provides the necessary functionality for handling user input, data structures, and file operations in a console-based application. 
 
-The program follows a modular structure with seperate functions for different responsibilities. 
+The program follows a modular structure with separate functions for different responsibilities. 
+
 
 ## Build System 
 No external build system is required.
 
 The application is executed using the Python interpreter and does not depend on external libraries.
+
 
 ## How to Run the Project
 The program is a task manager that can be run as both a CLI and GUI application. 
@@ -71,7 +95,7 @@ To run the program, follow these steps:
 2. Clone the repository:
     
     ```bash
-   git clone https://github.com/kuan23pc/mocha_list.git
+   git clone https://github.com/kuan23pc/calm_list.git
    ```
 3. Navigate to the project folder by writing: 
      
@@ -90,16 +114,19 @@ To run the program, follow these steps:
      python gui.py
      ```
 
+
 ## Kanban Board 
 You can find our Kanban Board here: [Kanban Board](https://github.com/users/kuan23pc/projects/1)
 
-## Work flow 
+
+## Workflow 
 - Each feature will be developed in a separate branch
 - Pull requests will be used before merging into main
 - Code reviews will be done by team members
 - No direct commits to the main branch 
  
- ## How to run the unit tests
+
+## How to Run the Unit Tests
 To run all unit tests, make sure you are in the root directory of the project. 
 
 Run the following command in the terminal: 
@@ -131,7 +158,7 @@ Then generate a report:
 python -m coverage report
 ```
 
-## How to run a linter
+## How to Run a Linter
 To check code quality, install flake8: 
 
 ```bash
