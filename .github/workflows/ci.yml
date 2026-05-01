@@ -70,7 +70,6 @@ jobs:
 
           if [ -f tasks.json ]; then cp tasks.json artifacts/project/app/; fi
           if [ -f README.md ]; then cp README.md artifacts/project/docs/; fi
-          if [ -f icon.png ]; then cp icon.png artifacts/project/app/; fi
 
           cp -r unit_tests artifacts/project/tests/
           cp -r .github artifacts/project/ci/
@@ -110,7 +109,6 @@ jobs:
 
           if [ -f tasks.json ]; then cp tasks.json release/; fi
           if [ -f README.md ]; then cp README.md release/; fi
-          if [ -f icon.png ]; then cp icon.png release/; fi
 
           zip -r calm-list-${{ github.ref_name }}.zip release
 
