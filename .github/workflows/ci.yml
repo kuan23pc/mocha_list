@@ -1,4 +1,4 @@
-name: Check syntax and create artifacts
+name: CI Artifacts
 
 on:
   push:
@@ -32,10 +32,30 @@ jobs:
       - name: Generate HTML coverage report
         run: python -m coverage html --title="CALM List Coverage Report" -d artifacts/html-coverage-report
 
-      - name: Add coverage README
+      - name: Add clean coverage summary page
         run: |
-          echo "HTML Coverage Report" > artifacts/html-coverage-report/README.txt
-          echo "Open index.html in a browser to view the coverage report." >> artifacts/html-coverage-report/README.txt
+          cat > artifacts/html-coverage-report/coverage-summary.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>CALM List Coverage Summary</title>
+          </head>
+          <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6;">
+            <h1>CALM List - Coverage Report</h1>
+            <p>This folder contains the generated HTML coverage report from the unit tests.</p>
+
+            <h2>Open the report</h2>
+            <p>
+              <a href="index.html" style="font-size: 20px; font-weight: bold;">
+                Open Full HTML Coverage Report
+              </a>
+            </p>
+
+            <p><strong>Note:</strong> The full coverage report needs all files in this folder to work correctly.</p>
+          </body>
+          </html>
+          EOF
 
       - name: Zip HTML coverage report
         run: |
