@@ -31,7 +31,7 @@ jobs:
           python -m pip install coverage
 
       - name: Run unit tests with coverage
-        run: python -m coverage run --omit="unit_tests/*" -m unittest discover -s unit_tests -p "test*.py" -v
+        run: python -m coverage run -m unittest discover -s unit_tests -p "test*.py" -v
 
       - name: Generate HTML coverage report
         run: python -m coverage html --title="CALM List Coverage Report" -d artifacts/html-coverage-report
@@ -53,9 +53,9 @@ jobs:
           </html>
           EOF
 
-      - name: Clean coverage report (force)
+      - name: Clean coverage report
         run: |
-          find artifacts -type f \( -name "*.png" -o -name "*.js" -o -name "*.css" \) -delete
+          find artifacts -type f \( -name "*.png" -o -name "*.js" \) -delete
 
       - name: Zip coverage report
         run: |
