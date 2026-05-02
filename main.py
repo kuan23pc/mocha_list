@@ -80,7 +80,7 @@ def add_task():
         return
 
     tasks.append({
-        "title": task, 
+        "title": task,
         "completed": False,
         "deadline" : None
     })
@@ -92,10 +92,10 @@ def show_tasks():
     if not tasks:
         print("👎 No tasks available. Add a new task!")
         return
-    
+
     total = len(tasks)
     done = sum(task["completed"] for task in tasks)
-    
+
     print(f"\n📝 Task List: ({total} tasks)")
     print(f"✅ Completed tasks: {done}/{total}\n")
 
@@ -112,20 +112,20 @@ def show_tasks():
 def delete_tasks():
     if not tasks:
         print("No tasks available to delete.")
-        return 
+        return
 
     show_tasks()
 
     task_to_delete = get_valid_number("Enter the task number to delete: ")
     if task_to_delete is None:
         return
-    
+
     index = task_to_delete - 1
 
     if index < 0 or index >= len(tasks):
         print("Task number not found.")
-        return 
-    
+        return
+
     removed_task = tasks.pop(index)
     save_tasks()
     print(f"Task '{removed_task['title']}' deleted!")
@@ -134,23 +134,40 @@ def delete_tasks():
 def mark_task_completed():
     if not tasks:
         print("No tasks available.")
-        return 
-    
+        return
+
     show_tasks()
 
     task_to_complete = get_valid_number("Enter the task number to mark as completed: ")
     if task_to_complete is None:
         return
-    
+
     index = task_to_complete - 1
 
     if index < 0 or index >= len(tasks):
         print("Task number not found.")
         return
-    
+
     tasks[index]["completed"] = True
     save_tasks()
     print(f"Task '{tasks[index]['title']}' marked as completed!")
+
+# Function to clear all completed tasks
+def clear_completed_tasks():
+    if not tasks:
+        print("No tasks available.")
+        return
+
+    completed_tasks = [task for task in tasks if task["completed"]]
+
+    if not completed_tasks:
+        print("No completed tasks to remove.")
+        return
+
+    tasks[:] = [task for task in tasks if not task["completed"]]
+
+    save_tasks()
+    print(f"Removed {len(completed_tasks)} completed task(s).")
 
 #optional: add deadline to a task(not integrated)
 def sort_tasks(tasks):
@@ -163,34 +180,34 @@ def set_deadline():
     if not tasks:
         print("No tasks available.")
         return
-    
+
     show_tasks()
 
     choice = get_valid_number("Enter task number to set deadline: ")
     if choice is None:
         return
-    
+
     index = choice - 1
 
     if index < 0 or index >= len(tasks):
         print("Task not found.")
         return
-    
+
     deadline = get_required_input(
         "Enter deadline (YYYY-MM-DD): ",
         "Deadline cannot be empty."
     )
     if deadline is None:
         return
-    
+
     try:
         parsed_deadline = datetime.strptime(deadline, "%Y-%m-%d").date()
     except ValueError:
         print("Please enter a valid date in YYYY-MM-DD format.")
         return
-    
+
     today = datetime.today().date()
-    
+
     if parsed_deadline < today:
         print("Deadline cannot be in the past.")
         return
@@ -208,13 +225,14 @@ def main():
         print("3. Delete tasks")
         print("4. Mark task as completed")
         print("5. Set deadline")
-        print("6. Exit")
+        print("6. Clear completed tasks")
+        print("7. Exit")
 
         choice = safe_input("Choose an option: ")
         if choice is None:
             continue
 
-        if choice not in {"1", "2", "3", "4", "5", "6"}:
+        if choice not in {"1", "2", "3", "4", "5", "6", "7"}:
             print("Invalid choice. Please try again.")
             continue
 
@@ -229,6 +247,8 @@ def main():
         elif choice == "5":
             set_deadline()
         elif choice == "6":
+            clear_completed_tasks()
+        elif choice == "7":
             break
         else:
             print("Invalid choice. Please try again.")
