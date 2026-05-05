@@ -15,7 +15,10 @@ TASK_ROW_WIDTH = 700
 # Color themes for the GUI
 # Current selected theme
 current_theme = "Calm Breeze"
-SETTINGS_FILE = "settings.json"
+
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
 
 # Color themes for the GUI
 THEMES = {
@@ -220,7 +223,7 @@ def C(color_name):
 
 #Data helper func.:
 
-#Ensures that task data follows the expected structure
+# Ensures that task data follows the expected structure
 def normalize_data():
     global current_list_index
 

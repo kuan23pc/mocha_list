@@ -95,12 +95,12 @@ To run the program, follow these steps:
 2. Clone the repository:
     
     ```bash
-   git clone https://github.com/kuan23pc/calm_list.git
+   git clone https://github.com/kuan23pc/CALM_LIST.git
    ```
 3. Navigate to the project folder by writing: 
      
      ```bash
-     cd CALM_List
+     cd CALM_LIST
      ```
 4. Run the program by writing: 
      
