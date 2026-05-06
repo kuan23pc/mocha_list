@@ -6,9 +6,15 @@ __pycache__/
 .venv/
 .env
 
-# IDE files
+# IDE files 
 .vscode/
 .idea/
 
-#Coverage
+# Coverage
 .coverage
+build/
+dist/
+
+# Local files
+settings.json
+tasks.json

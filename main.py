@@ -79,11 +79,15 @@ def add_task():
     if task is None:
         return
 
+    description = safe_input("Enter description (optional): ")
+
     tasks.append({
-        "title": task, 
+        "title": task,
         "completed": False,
-        "deadline" : None
+        "deadline": None,
+        "description": description if description else None
     })
+
     save_tasks()
     print(f"Task '{task}' added!")
 
@@ -105,7 +109,10 @@ def show_tasks():
         deadline = task.get("deadline")
         deadline_text = f" (Deadline: {deadline})" if deadline else ""
 
-        print(f"{i}. {task['title']}{deadline_text}: {status}")
+        description = task.get("description")
+        description_text = f" (Description: {description})" if description else ""
+
+        print(f"{i}. {task['title']}{deadline_text}{description_text}: {status}")
 
 
 #Funktion to DELETE a task CO
