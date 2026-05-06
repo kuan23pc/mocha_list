@@ -84,7 +84,9 @@ class TestIntegration(unittest.TestCase):
         main.tasks.append({
             "title": "Integration Task",
             "completed": False,
-            "deadline": None
+            "deadline": None,
+            "description": None
+
         })
 
         main.save_tasks()
@@ -96,6 +98,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(loaded_tasks[0]["title"], "Integration Task")
         self.assertFalse(loaded_tasks[0]["completed"])
         self.assertIsNone(loaded_tasks[0]["deadline"])
+        self.assertIsNone(loaded_tasks[0]["description"])
 
     # Test 5: Invalid delete input
     def test_invalid_input(self): 
