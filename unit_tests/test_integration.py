@@ -78,6 +78,28 @@ class TestIntegration(unittest.TestCase):
 
         self.assertEqual(data[0]["deadline"], "2099-12-31")
 
+     # Test 5: save and load tasks
+    def test_save_and_load_tasks_integration(self):
+        main.tasks.clear()
+        main.tasks.append({
+            "title": "Integration Task",
+            "completed": False,
+            "deadline": None,
+            "description": None
+
+        })
+
+        main.save_tasks()
+
+        main.tasks.clear()
+        loaded_tasks = main.load_tasks()
+
+        self.assertEqual(len(loaded_tasks), 1)
+        self.assertEqual(loaded_tasks[0]["title"], "Integration Task")
+        self.assertFalse(loaded_tasks[0]["completed"])
+        self.assertIsNone(loaded_tasks[0]["deadline"])
+        self.assertIsNone(loaded_tasks[0]["description"])
+
     # Test 5: Invalid delete input
     def test_invalid_input(self): 
         main.safe_input = lambda _: "Task X"
