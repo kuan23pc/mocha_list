@@ -387,7 +387,7 @@ def rename_current_list():
     save_tasks()
     refresh_all()
 
-# Deleted the currenly selected list
+# Deleted the currently selected list
 def delete_current_list():
     global current_list_index
 
@@ -414,6 +414,41 @@ def delete_current_list():
 
     save_tasks()
     refresh_all()
+
+
+# Moves the currently selected list up or down
+def move_current_list(direction):
+    global current_list_index
+
+    if not tasks or current_list_index == -1:
+        return
+
+    new_index = current_list_index + direction
+
+    if new_index < 0 or new_index >= len(tasks):
+        return
+
+    tasks[current_list_index], tasks[new_index] = tasks[new_index], tasks[current_list_index]
+    current_list_index = new_index
+
+    save_tasks()
+    refresh_all()
+
+
+# Enables or disables the list move buttons
+def update_list_move_buttons():
+    if not tasks or current_list_index == -1:
+        move_list_up_button.config(state="disabled")
+        move_list_down_button.config(state="disabled")
+        return
+
+    move_list_up_button.config(
+        state="normal" if current_list_index > 0 else "disabled"
+    )
+
+    move_list_down_button.config(
+        state="normal" if current_list_index < len(tasks) - 1 else "disabled"
+    )
 
 # Filter functions, sets active filter (all/active/completed)
 def set_filter(filter_name):
@@ -510,6 +545,22 @@ def delete_task_gui(index):
         return
 
     current_tasks.pop(index)
+    save_tasks()
+    refresh_all()
+
+#move task 
+def move_task_gui(index, direction):
+    if current_filter != "all":
+        return
+
+    current_tasks = get_current_tasks()
+    new_index = index + direction
+
+    if new_index < 0 or new_index >= len(current_tasks):
+        return
+
+    current_tasks[index], current_tasks[new_index] = current_tasks[new_index], current_tasks[index]
+
     save_tasks()
     refresh_all()
 
@@ -865,7 +916,37 @@ def refresh_tasks():
                 description_label.pack(fill="x", padx=(40, 0), pady=(2, 0))
 
             button_frame = tk.Frame(row, bg=C("row"))
-            button_frame.pack(side="right", padx=(20, 0))
+            button_frame.pack(side="right", padx=(8, 0))
+
+            move_up_button = tk.Button(
+                button_frame,
+                text="↑",
+                command=lambda i=real_index: move_task_gui(i, -1),
+                bg=C("button"),
+                fg=C("text"),
+                activebackground=C("button_active"),
+                font=("Times New Roman", 8, "bold"),
+                width=2,
+                padx=0,
+                pady=0,
+                state="normal" if current_filter == "all" and real_index > 0 else "disabled"
+            )
+            move_up_button.grid(row=0, column=0, padx=1, pady=2)
+
+            move_down_button = tk.Button(
+                button_frame,
+                text="↓",
+                command=lambda i=real_index: move_task_gui(i, 1),
+                bg=C("button"),
+                fg=C("text"),
+                activebackground=C("button_active"),
+                font=("Times New Roman", 8, "bold"),
+                width=2,
+                padx=0,
+                pady=0,
+                state="normal" if current_filter == "all" and real_index < len(get_current_tasks()) - 1 else "disabled"
+            )
+            move_down_button.grid(row=0, column=1, padx=1, pady=2)
 
             edit_button = tk.Button(
                 button_frame,
@@ -877,19 +958,19 @@ def refresh_tasks():
                 font=("Times New Roman", 10),
                 width=8
             )
-            edit_button.grid(row=0, column=0, padx=4, pady=2)
+            edit_button.grid(row=0, column=2, padx=3, pady=2)
 
             deadline_button = tk.Button(
                 button_frame,
-                text="Set Deadline",
+                text="Deadline",
                 command=lambda i=real_index: set_deadline_gui(i),
                 bg=C("button"),
                 fg=C("text"),
                 activebackground=C("button_active"),
                 font=("Times New Roman", 10),
-                width=12
+                width=9
             )
-            deadline_button.grid(row=0, column=1, padx=4, pady=2)
+            deadline_button.grid(row=0, column=3, padx=3, pady=2)
 
             delete_button = tk.Button(
                 button_frame,
@@ -901,7 +982,7 @@ def refresh_tasks():
                 font=("Times New Roman", 10),
                 width=8
             )
-            delete_button.grid(row=0, column=2, padx=4, pady=2)
+            delete_button.grid(row=0, column=4, padx=3, pady=2)
 
     root.after_idle(update_scrollbars)
 
@@ -911,6 +992,7 @@ def refresh_all():
     update_counter()
     update_filter_buttons()
     update_main_title()
+    update_list_move_buttons()
 
 def change_theme(selected_theme):
     global current_theme
@@ -952,6 +1034,20 @@ def apply_theme():
     )
 
     delete_list_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    move_list_frame.config(bg=C("sidebar"))
+
+    move_list_up_button.config(
+        bg=C("button"),
+        fg=C("text"),
+        activebackground=C("button_active")
+    )
+
+    move_list_down_button.config(
         bg=C("button"),
         fg=C("text"),
         activebackground=C("button_active")
@@ -1126,6 +1222,37 @@ delete_list_button = tk.Button(
 )
 
 delete_list_button.pack(pady=(5, 15))
+
+move_list_frame = tk.Frame(sidebar, bg=C("sidebar"))
+move_list_frame.pack(pady=(0, 15))
+
+move_list_up_button = tk.Button(
+    move_list_frame,
+    text="↑",
+    command=lambda: move_current_list(-1),
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
+    font=("Times New Roman", 9, "bold"),
+    width=2,
+    padx=0,
+    pady=0
+)
+move_list_up_button.pack(side="left", padx=3)
+
+move_list_down_button = tk.Button(
+    move_list_frame,
+    text="↓",
+    command=lambda: move_current_list(1),
+    bg=C("button"),
+    fg=C("text"),
+    activebackground=C("button_active"),
+    font=("Times New Roman", 9, "bold"),
+    width=2,
+    padx=0,
+    pady=0
+)
+move_list_down_button.pack(side="left", padx=3)
 
 # Theme selector
 theme_label = tk.Label(
