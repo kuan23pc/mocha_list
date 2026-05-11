@@ -1,14 +1,21 @@
 import unittest
 import json
 import os
+import tempfile
 import main
 
 # Integration tests for full workflows in the task manager
 class TestIntegration(unittest.TestCase):
+
     # Setup before each test: reset tasks and use a tempory file
     def setUp(self):
         main.tasks.clear()
-        self.test_file = "test_tasks.json"
+
+        # use a unique temp file instead of fixed name
+        temp = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+        self.test_file = temp.name
+        temp.close()
+
         self.original_file_name = main.FILE_NAME
         main.FILE_NAME = self.test_file
 
@@ -49,7 +56,6 @@ class TestIntegration(unittest.TestCase):
         self.assertTrue(data[0]["completed"])
 
     # Test 3: add, delete, file updated
-
     def test_delete_task(self):
         main.safe_input = lambda _: "Task C"
         main.add_task()
@@ -61,7 +67,6 @@ class TestIntegration(unittest.TestCase):
             data = json.load(f)
 
         self.assertEqual(len(data), 0)
-
 
     # Test 4: add, set deadline, saved
     def test_set_deadline(self):

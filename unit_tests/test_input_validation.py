@@ -9,14 +9,14 @@ class TestInputValidation(unittest.TestCase):
         # Reset task list before each test
         main.tasks.clear()
 
-    # Test that the main loop exits immediately when choosing option 6
+    # Test that the main loop exits immediately when choosing option 7
     def test_main_exit(self):
-        with patch("builtins.input", side_effect=["6"]):
+        with patch("builtins.input", side_effect=["7"]):
             main.main()
 
     # Test invalid menu input followed by a valid exit command
     def test_main_invalid_then_exit(self):
-        with patch("builtins.input", side_effect=["99", "6"]):
+        with patch("builtins.input", side_effect=["99", "7"]):
             main.main()
 
     # Test safe_input handling of KeyboardInterrupt (e.g., Ctrl+C)
