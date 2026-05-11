@@ -57,11 +57,7 @@ jobs:
         run: |
           find artifacts -type f \( -name "*.png" -o -name "*.js" \) -delete
 
-      - name: Zip coverage report
-        run: |
-          cd artifacts
-          zip -r html-coverage-report.zip html-coverage-report
-
+  
       - name: Create deployable project package
         run: |
           mkdir -p artifacts/project/app
@@ -92,7 +88,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: html-coverage-report-${{ github.run_number }}
-          path: artifacts/html-coverage-report.zip
+          path: artifacts/html-coverage-report
           retention-days: 30
 
   release:
